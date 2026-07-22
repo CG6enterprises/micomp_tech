@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Micomp_Tech - Statistical Sciences & Data Management</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="logo">
+                <h1>Micomp_Tech</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#courses" class="nav-link">Courses</a></li>
+                <li><a href="#tools" class="nav-link">Analysis Tools</a></li>
+                <li><a href="#portfolio" class="nav-link">Portfolio</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <button class="btn btn-login" id="loginBtn">Login</button>
+                <button class="btn btn-signup" id="signupBtn">Sign Up</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h2>Master Statistical Sciences & Data Management</h2>
+            <p>Learn from industry experts. Build real-world data skills. Launch your freelance career.</p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary">Start Learning</button>
+                <button class="btn btn-secondary">Explore Services</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Courses Section -->
+    <section class="courses" id="courses">
+        <div class="container">
+            <h2>Our Courses</h2>
+            <div class="courses-grid">
+                <!-- Course 1 -->
+                <div class="course-card">
+                    <div class="course-icon">📊</div>
+                    <h3>Data Collection 101</h3>
+                    <p>Learn systematic methods for collecting quality data. Covers sampling techniques, survey design, and data quality assurance.</p>
+                    <div class="course-meta">
+                        <span class="level">Beginner</span>
+                        <span class="duration">4 weeks</span>
+                    </div>
+                    <button class="btn btn-primary-small">Enroll Now</button>
+                </div>
+
+                <!-- Course 2 -->
+                <div class="course-card">
+                    <div class="course-icon">📈</div>
+                    <h3>Statistical Basics</h3>
+                    <p>Master fundamental statistical concepts. Probability, distributions, hypothesis testing, and confidence intervals.</p>
+                    <div class="course-meta">
+                        <span class="level">Beginner</span>
+                        <span class="duration">5 weeks</span>
+                    </div>
+                    <button class="btn btn-primary-small">Enroll Now</button>
+                </div>
+
+                <!-- Course 3 -->
+                <div class="course-card">
+                    <div class="course-icon">🔧</div>
+                    <h3>Data Processing</h3>
+                    <p>Learn ETL processes, data cleaning, transformation, and preparation for analysis. Hands-on with real datasets.</p>
+                    <div class="course-meta">
+                        <span class="level">Intermediate</span>
+                        <span class="duration">6 weeks</span>
+                    </div>
+                    <button class="btn btn-primary-small">Enroll Now</button>
+                </div>
+
+                <!-- Course 4 -->
+                <div class="course-card">
+                    <div class="course-icon">🎓</div>
+                    <h3>Advanced Analysis</h3>
+                    <p>Dive into regression, ANOVA, multivariate analysis, and predictive modeling. Advanced statistical techniques.</p>
+                    <div class="course-meta">
+                        <span class="level">Advanced</span>
+                        <span class="duration">8 weeks</span>
+                    </div>
+                    <button class="btn btn-primary-small">Enroll Now</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Analysis Tools Section -->
+    <section class="tools" id="tools">
+        <div class="container">
+            <h2>Statistical Analysis Tools</h2>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <h3>📊 Descriptive Statistics</h3>
+                    <p>Calculate mean, median, mode, standard deviation, and more.</p>
+                    <button class="btn btn-primary-small" onclick="openTool('descriptive')">Open Tool</button>
+                </div>
+                <div class="tool-card">
+                    <h3>📉 Data Visualization</h3>
+                    <p>Create charts, graphs, and visual representations of your data.</p>
+                    <button class="btn btn-primary-small" onclick="openTool('visualization')">Open Tool</button>
+                </div>
+                <div class="tool-card">
+                    <h3>🔬 Hypothesis Testing</h3>
+                    <p>Perform t-tests, chi-square tests, and ANOVA analysis.</p>
+                    <button class="btn btn-primary-small" onclick="openTool('hypothesis')">Open Tool</button>
+                </div>
+                <div class="tool-card">
+                    <h3>📐 Regression Analysis</h3>
+                    <p>Linear and multiple regression with detailed statistics.</p>
+                    <button class="btn btn-primary-small" onclick="openTool('regression')">Open Tool</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Freelance Portfolio Section -->
+    <section class="portfolio" id="portfolio">
+        <div class="container">
+            <h2>Freelance Services Portfolio</h2>
+            <div class="portfolio-info">
+                <div class="portfolio-intro">
+                    <h3>Data Collection & Analysis for Your Business</h3>
+                    <p>Specialized in Business, Education, and Tax data analysis. Trusted by organizations across industries.</p>
+                </div>
+                <div class="portfolio-stats">
+                    <div class="stat">
+                        <h4>50+</h4>
+                        <p>Projects Completed</p>
+                    </div>
+                    <div class="stat">
+                        <h4>30+</h4>
+                        <p>Happy Clients</p>
+                    </div>
+                    <div class="stat">
+                        <h4>100%</h4>
+                        <p>Satisfaction Rate</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="portfolio-projects">
+                <h3>Recent Projects</h3>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <h4>Business Analytics Dashboard</h4>
+                        <p>Developed comprehensive analytics dashboard for retail chain analyzing sales patterns and customer behavior.</p>
+                        <span class="project-category">Business</span>
+                    </div>
+                    <div class="project-card">
+                        <h4>Educational Survey Analysis</h4>
+                        <p>Conducted and analyzed student satisfaction surveys for university with 1000+ respondents.</p>
+                        <span class="project-category">Education</span>
+                    </div>
+                    <div class="project-card">
+                        <h4>Tax Data Processing</h4>
+                        <p>Automated data collection and processing for tax compliance reporting covering multiple jurisdictions.</p>
+                        <span class="project-category">Taxes</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="freelance-cta">
+                <h3>Ready to Work Together?</h3>
+                <p>Fill out our data collection form to get started on your project.</p>
+                <button class="btn btn-primary" onclick="openForm('client')">Request Services</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Assistant Section -->
+    <section class="ai-assistant">
+        <div class="container">
+            <h2>AI-Powered Learning Assistant</h2>
+            <div class="assistant-box">
+                <div class="chatbot-container">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message assistant-message">
+                            <p>Hi! I'm your AI learning assistant. Ask me anything about statistics, data collection, or data processing. I'm powered by Claude, Gemini, and ChatGPT to give you the best explanations.</p>
+                        </div>
+                    </div>
+                    <div class="chat-input-area">
+                        <input type="text" id="chatInput" placeholder="Ask me a question..." class="chat-input">
+                        <button class="btn btn-small" onclick="sendMessage()">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <h2>Get In Touch</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Contact Information</h3>
+                    <p><strong>Email:</strong> info@micomp-tech.com</p>
+                    <p><strong>Phone:</strong> +1 (555) 123-4567</p>
+                    <p><strong>Address:</strong> Statistical Sciences Center</p>
+                </div>
+                <div class="contact-form">
+                    <h3>Send us a Message</h3>
+                    <form id="contactForm">
+                        <input type="text" placeholder="Your Name" required>
+                        <input type="email" placeholder="Your Email" required>
+                        <textarea placeholder="Your Message" rows="5" required></textarea>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Micomp_Tech. All rights reserved.</p>
+            <p>Statistical Sciences & Data Management Excellence</p>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            <h2>Login</h2>
+            <form>
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('signupModal')">&times;</span>
+            <h2>Sign Up</h2>
+            <form>
+                <input type="text" placeholder="Full Name" required>
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Password" required>
+                <select required>
+                    <option value="">Select Account Type</option>
+                    <option value="student">Student</option>
+                    <option value="professional">Professional</option>
+                </select>
+                <button type="submit" class="btn btn-primary">Sign Up</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
