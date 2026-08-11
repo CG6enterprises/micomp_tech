@@ -116,7 +116,7 @@ class GeminiAssistant:
             import google.generativeai as genai
             
             genai.configure(api_key=self.api_key)
-            model = genai.GenerativeModel('gemini-pro')
+            model = genai.GenerativeModel('gemini-flash-latest')
             
             system_prompt = """You are an expert statistician and data science educator. 
             Answer questions about statistics, data collection, data processing, and data analysis.
