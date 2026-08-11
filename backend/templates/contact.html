@@ -13,8 +13,14 @@
 
     <section class="contact">
         <div class="container">
-            <div class="contact-content contact-content-single">
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Contact Information</h3>
+                    <p><strong>Email:</strong> <a href="mailto:{{ contact_email }}">{{ contact_email }}</a></p>
+                    <p><strong>Phone:</strong> <a href="tel:{{ contact_phone_tel }}">{{ contact_phone }}</a></p>
+                </div>
                 <div class="contact-form">
+                    <h3>Send us a Message</h3>
                     <form id="contactForm" class="stacked-form">
                         <input type="text" id="contactName" placeholder="Your Name" required>
                         <input type="email" id="contactEmail" placeholder="Your Email" required>

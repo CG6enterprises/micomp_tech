@@ -23,6 +23,22 @@ FRONTEND_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 app = Flask(__name__)
 CORS(app)
 
+# ---- Public contact info (shown in footer + Contact page) ----
+# CONTACT_EMAIL is a PLACEHOLDER domain that has not been purchased yet.
+# Swap it here once the real domain is registered - it propagates everywhere via the context processor below.
+CONTACT_EMAIL = 'info@micomptech.com'
+CONTACT_PHONE_DISPLAY = '(586) 221-3679'
+CONTACT_PHONE_TEL = '+15862213679'
+
+
+@app.context_processor
+def inject_contact_info():
+    return dict(
+        contact_email=CONTACT_EMAIL,
+        contact_phone=CONTACT_PHONE_DISPLAY,
+        contact_phone_tel=CONTACT_PHONE_TEL
+    )
+
 # Database configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///micomp_tech.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

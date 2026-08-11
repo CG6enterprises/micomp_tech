@@ -1133,6 +1133,24 @@ body {
     color: var(--accent-gold);
 }
 
+.footer-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    font-size: 0.9rem;
+}
+
+.footer-contact a {
+    color: var(--white);
+    text-decoration: none;
+    opacity: 0.9;
+}
+
+.footer-contact a:hover {
+    opacity: 1;
+    color: var(--accent-gold);
+}
+
 .footer-copy {
     opacity: 0.85;
     font-size: 0.9rem;
