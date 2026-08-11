@@ -43,7 +43,7 @@ function openForm(formType) {
 }
 
 // Chat Functions
-function sendMessage() {
+async function sendMessage() {
     const chatInput = document.getElementById('chatInput');
     const chatMessages = document.getElementById('chatMessages');
     const userMessage = chatInput.value.trim();
@@ -58,42 +58,28 @@ function sendMessage() {
 
     // Clear input
     chatInput.value = '';
-
-    // Simulate AI response (replace with actual API call later)
-    setTimeout(() => {
-        const aiResponse = getAIResponse(userMessage);
-        const aiMsgDiv = document.createElement('div');
-        aiMsgDiv.className = 'message assistant-message';
-        aiMsgDiv.innerHTML = `<p>${aiResponse}</p>`;
-        chatMessages.appendChild(aiMsgDiv);
-        
-        // Scroll to bottom
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }, 500);
-
-    // Scroll to bottom
     chatMessages.scrollTop = chatMessages.scrollHeight;
-}
 
-function getAIResponse(userMessage) {
-    const responses = {
-        'statistics': 'Statistics is the science of collecting, analyzing, and interpreting data. It helps us make informed decisions based on evidence.',
-        'data collection': 'Data collection is the first step in any analysis. Good data collection ensures accuracy and reliability of results.',
-        'sample': 'A sample is a subset of a population selected for analysis. Good sampling methods include random sampling, stratified sampling, and cluster sampling.',
-        'mean': 'The mean is the average of all values in a dataset. It\'s calculated by summing all values and dividing by the number of values.',
-        'hypothesis': 'Hypothesis testing is a statistical method used to determine if there is enough evidence to reject a null hypothesis.',
-        'regression': 'Regression analysis is used to model the relationship between a dependent variable and one or more independent variables.',
-        'default': 'That\'s a great question! I\'m learning about this topic. For now, I recommend exploring our courses to dive deeper into statistical concepts.'
-    };
+    // Show a placeholder while the AI answers
+    const aiMsgDiv = document.createElement('div');
+    aiMsgDiv.className = 'message assistant-message';
+    aiMsgDiv.innerHTML = '<p>Thinking...</p>';
+    chatMessages.appendChild(aiMsgDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
 
-    const lowerMessage = userMessage.toLowerCase();
-    for (const [key, response] of Object.entries(responses)) {
-        if (lowerMessage.includes(key)) {
-            return response;
+    try {
+        const result = await apiClient.chat(userMessage);
+
+        if (result.status === 'success') {
+            aiMsgDiv.innerHTML = `<p>${escapeHtml(result.answer)}</p>`;
+        } else {
+            aiMsgDiv.innerHTML = '<p>The AI assistant isn\'t configured yet. Try exploring our courses instead!</p>';
         }
+    } catch (error) {
+        aiMsgDiv.innerHTML = '<p>Sorry, I couldn\'t reach the AI assistant right now. Please try again later.</p>';
     }
 
-    return responses.default;
+    chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
 function escapeHtml(text) {

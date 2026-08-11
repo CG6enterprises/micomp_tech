@@ -481,6 +481,26 @@ def ttest_analysis():
         return jsonify({'error': str(e)}), 400
 
 
+# AI Assistant Route
+@app.route('/api/chat', methods=['POST'])
+def chat():
+    """Ask the AI learning assistant a question"""
+    from ai_integration import get_ai_response
+
+    data = request.get_json()
+
+    if not data or not data.get('message'):
+        return jsonify({'error': 'Missing message'}), 400
+
+    result = get_ai_response(
+        data['message'],
+        provider=data.get('provider', 'gemini'),
+        context=data.get('context')
+    )
+
+    return jsonify(result), 200
+
+
 # Error handlers
 @app.errorhandler(404)
 def not_found(error):

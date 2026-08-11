@@ -12,7 +12,7 @@ load_dotenv()
 class AIAssistant:
     """Main AI Assistant class that routes to different AI providers"""
     
-    def __init__(self, provider='claude'):
+    def __init__(self, provider='gemini'):
         """
         Initialize AI Assistant
         provider: 'claude', 'gemini', or 'openai'
@@ -46,8 +46,8 @@ class ClaudeAssistant:
     
     def __init__(self):
         self.api_key = os.getenv('CLAUDE_API_KEY')
-        if not self.api_key:
-            raise ValueError("CLAUDE_API_KEY not found in environment variables")
+        if not self.api_key or self.api_key.startswith('your_'):
+            raise ValueError("CLAUDE_API_KEY not set in .env (still a placeholder)")
     
     def answer_question(self, question, context=None):
         """Answer a question using Claude"""
@@ -107,8 +107,8 @@ class GeminiAssistant:
     
     def __init__(self):
         self.api_key = os.getenv('GEMINI_API_KEY')
-        if not self.api_key:
-            raise ValueError("GEMINI_API_KEY not found in environment variables")
+        if not self.api_key or self.api_key.startswith('your_'):
+            raise ValueError("GEMINI_API_KEY not set in .env (still a placeholder)")
     
     def answer_question(self, question, context=None):
         """Answer a question using Gemini"""
@@ -157,8 +157,8 @@ class OpenAIAssistant:
     
     def __init__(self):
         self.api_key = os.getenv('OPENAI_API_KEY')
-        if not self.api_key:
-            raise ValueError("OPENAI_API_KEY not found in environment variables")
+        if not self.api_key or self.api_key.startswith('your_'):
+            raise ValueError("OPENAI_API_KEY not set in .env (still a placeholder)")
     
     def answer_question(self, question, context=None):
         """Answer a question using ChatGPT"""
@@ -211,7 +211,7 @@ class OpenAIAssistant:
 
 # Utility Functions
 
-def get_ai_response(question, provider='claude', context=None):
+def get_ai_response(question, provider='gemini', context=None):
     """Get AI response from specified provider"""
     try:
         assistant = AIAssistant(provider=provider)
@@ -223,7 +223,7 @@ def get_ai_response(question, provider='claude', context=None):
         }
 
 
-def explain_statistical_concept(concept, level='beginner', provider='claude'):
+def explain_statistical_concept(concept, level='beginner', provider='gemini'):
     """Explain a statistical concept using AI"""
     try:
         assistant = AIAssistant(provider=provider)
@@ -235,7 +235,7 @@ def explain_statistical_concept(concept, level='beginner', provider='claude'):
         }
 
 
-def generate_practice_exercise(topic, difficulty='medium', provider='claude'):
+def generate_practice_exercise(topic, difficulty='medium', provider='gemini'):
     """Generate a practice exercise using AI"""
     try:
         assistant = AIAssistant(provider=provider)

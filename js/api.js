@@ -115,6 +115,14 @@ class APIClient {
             body: JSON.stringify({ group1, group2 })
         });
     }
+
+    // AI Assistant endpoint
+    async chat(message, context = null, provider = null) {
+        return this.request('/chat', {
+            method: 'POST',
+            body: JSON.stringify({ message, context, provider })
+        });
+    }
 }
 
 // Initialize API client
