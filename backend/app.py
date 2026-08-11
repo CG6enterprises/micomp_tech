@@ -3,7 +3,7 @@ Micomp_Tech Backend Application
 Statistical Sciences & Data Management Platform
 """
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -12,6 +12,9 @@ from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
+
+# Frontend lives one level up from backend/ (repo root)
+FRONTEND_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -99,7 +102,23 @@ class Invoice(db.Model):
 
 @app.route('/', methods=['GET'])
 def home():
-    """Home endpoint"""
+    """Serve the landing page"""
+    return send_from_directory(FRONTEND_DIR, 'index.html')
+
+
+@app.route('/css/<path:filename>', methods=['GET'])
+def css_files(filename):
+    return send_from_directory(os.path.join(FRONTEND_DIR, 'css'), filename)
+
+
+@app.route('/js/<path:filename>', methods=['GET'])
+def js_files(filename):
+    return send_from_directory(os.path.join(FRONTEND_DIR, 'js'), filename)
+
+
+@app.route('/api', methods=['GET'])
+def api_root():
+    """API welcome/info endpoint"""
     return jsonify({
         'message': 'Welcome to Micomp_Tech API',
         'version': '1.0.0',
@@ -451,11 +470,11 @@ def ttest_analysis():
         group2 = np.array(data['group2'], dtype=float)
         
         t_stat, p_value = ttest_ind(group1, group2)
-        
+
         return jsonify({
             't_statistic': float(t_stat),
             'p_value': float(p_value),
-            'significant': p_value < 0.05,
+            'significant': bool(p_value < 0.05),
             'interpretation': 'Significant difference' if p_value < 0.05 else 'No significant difference'
         }), 200
     except Exception as e:
@@ -471,12 +490,6 @@ def not_found(error):
 @app.errorhandler(500)
 def internal_error(error):
     return jsonify({'error': 'Internal server error'}), 500
-
-
-# Initialize database
-@app.before_first_request
-def create_tables():
-    db.create_all()
 
 
 if __name__ == '__main__':
