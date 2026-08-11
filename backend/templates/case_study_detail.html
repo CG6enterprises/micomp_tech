@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}{{ case_study.title }}{% endblock %}
+{% block meta_description %}{{ case_study.summary }}{% endblock %}
+
+{% block content %}
+    <section class="page-hero">
+        <div class="container">
+            <a href="/case-studies" class="back-link">&larr; All Case Studies</a>
+            <span class="dataset-category-tag">{{ case_study.category }}</span>
+            <h2>{{ case_study.title }}</h2>
+            <p>{{ case_study.summary }}</p>
+        </div>
+    </section>
+
+    <section class="case-study-detail">
+        <div class="container">
+            <div class="detail-block">
+                <h3>The Question</h3>
+                <p>{{ case_study.question }}</p>
+            </div>
+
+            <div class="detail-block">
+                <h3>Why {{ case_study.technique }}?</h3>
+                <p>{{ case_study.why_this_technique }}</p>
+            </div>
+
+            <div class="detail-block">
+                <h3>What We Did</h3>
+                <ol class="steps-list">
+                    {% for step in case_study.steps %}
+                    <li>{{ step }}</li>
+                    {% endfor %}
+                </ol>
+                {% if dataset %}
+                <p class="dataset-link-note">Using the <a href="/datasets/download/{{ dataset.filename }}">{{ dataset.name }}</a> dataset.</p>
+                {% endif %}
+            </div>
+
+            <div class="detail-block">
+                <h3>The Results</h3>
+                <div class="tool-results case-study-results">
+                    {% for label, value in results_display %}
+                    <div class="result-card">
+                        <span class="result-label">{{ label }}</span>
+                        <span class="result-value">{{ value }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="detail-block">
+                <h3>Interpretation</h3>
+                <p>{{ case_study.interpretation }}</p>
+            </div>
+
+            <div class="honest-note-box case-study-caveat">
+                <h3>Worth Knowing</h3>
+                <p>{{ case_study.caveat }}</p>
+            </div>
+        </div>
+    </section>
+{% endblock %}

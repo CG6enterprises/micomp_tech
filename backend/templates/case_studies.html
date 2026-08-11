@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Case Studies{% endblock %}
+{% block meta_description %}Real worked statistics case studies using our own analysis tools on sample data.{% endblock %}
+
+{% block content %}
+    <section class="page-hero">
+        <div class="container">
+            <a href="/library" class="back-link">&larr; Library</a>
+            <h2>Case Studies</h2>
+            <p>The whole process, worked start to finish: a real question, the right technique, and results computed by the same engine that powers our Analysis Tools.</p>
+        </div>
+    </section>
+
+    <section class="case-studies-page">
+        <div class="container">
+            <div class="case-study-list">
+                {% for cs in case_studies %}
+                <a href="/case-studies/{{ cs.slug }}" class="case-study-card">
+                    <span class="dataset-category-tag">{{ cs.category }}</span>
+                    <h3>{{ cs.title }}</h3>
+                    <p>{{ cs.summary }}</p>
+                    <span class="case-study-technique">{{ cs.technique }}</span>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

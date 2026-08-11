@@ -187,6 +187,27 @@ document.getElementById('ttestBtn')?.addEventListener('click', async () => {
 
 // ---- Regression ----
 
+// ---- Deep-link support: /tools?open=descriptive|correlation|ttest|regression ----
+
+(function scrollToRequestedPanel() {
+    const params = new URLSearchParams(window.location.search);
+    const target = params.get('open');
+    const panelMap = {
+        descriptive: 0,
+        correlation: 1,
+        ttest: 2,
+        regression: 3
+    };
+    if (target && target in panelMap) {
+        const panels = document.querySelectorAll('.tool-panel');
+        const panel = panels[panelMap[target]];
+        if (panel) {
+            panel.classList.add('tool-panel-highlight');
+            setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
+        }
+    }
+})();
+
 document.getElementById('regBtn')?.addEventListener('click', async () => {
     setError('regError', '');
     try {

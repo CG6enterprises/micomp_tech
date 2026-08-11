@@ -197,6 +197,72 @@ def contact_page():
     return render_template('contact.html', active_page='contact')
 
 
+@app.route('/library', methods=['GET'])
+def library_page():
+    from content import GLOSSARY, TOOL_LABELS
+    categories = sorted(set(term['category'] for term in GLOSSARY))
+    return render_template(
+        'library.html',
+        active_page='library',
+        glossary=GLOSSARY,
+        categories=categories,
+        tool_labels=TOOL_LABELS
+    )
+
+
+@app.route('/which-test-should-i-use', methods=['GET'])
+def which_test_page():
+    return render_template('which_test.html', active_page='library')
+
+
+@app.route('/datasets', methods=['GET'])
+def datasets_page():
+    from content import DATASETS
+    return render_template('datasets.html', active_page='datasets', datasets=DATASETS)
+
+
+@app.route('/datasets/download/<path:filename>', methods=['GET'])
+def download_dataset(filename):
+    from content import DATASETS
+    valid_names = {d['filename'] for d in DATASETS}
+    if filename not in valid_names:
+        abort(404)
+    data_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data'))
+    return send_from_directory(data_dir, filename, as_attachment=True)
+
+
+@app.route('/case-studies', methods=['GET'])
+def case_studies_page():
+    from content import CASE_STUDIES
+    return render_template('case_studies.html', active_page='case-studies', case_studies=CASE_STUDIES)
+
+
+@app.route('/case-studies/<slug>', methods=['GET'])
+def case_study_detail_page(slug):
+    from content import CASE_STUDIES, DATASETS, RESULT_LABELS
+    case_study = next((c for c in CASE_STUDIES if c['slug'] == slug), None)
+    if not case_study:
+        abort(404)
+    dataset = next((d for d in DATASETS if d['slug'] == case_study['dataset_slug']), None)
+
+    results_display = []
+    for key, value in case_study['results'].items():
+        label = RESULT_LABELS.get(key, key.replace('_', ' ').title())
+        if isinstance(value, float):
+            formatted = f'{value:.4f}'
+        else:
+            formatted = value
+        results_display.append((label, formatted))
+
+    return render_template(
+        'case_study_detail.html',
+        active_page='case-studies',
+        case_study=case_study,
+        dataset=dataset,
+        results_display=results_display
+    )
+
+
 # ==================== STATIC ASSETS ====================
 
 @app.route('/css/<path:filename>', methods=['GET'])
@@ -652,6 +718,44 @@ def chat():
         data['message'],
         provider=data.get('provider', 'gemini'),
         context=data.get('context')
+    )
+
+    return jsonify(result), 200
+
+
+@app.route('/api/explain', methods=['POST'])
+def explain():
+    """Ask the AI to explain a statistical concept in plain language"""
+    from ai_integration import explain_statistical_concept
+
+    data = request.get_json()
+
+    if not data or not data.get('concept'):
+        return jsonify({'error': 'Missing concept'}), 400
+
+    result = explain_statistical_concept(
+        data['concept'],
+        level=data.get('level', 'beginner'),
+        provider=data.get('provider', 'gemini')
+    )
+
+    return jsonify(result), 200
+
+
+@app.route('/api/exercise', methods=['POST'])
+def exercise():
+    """Ask the AI to generate a practice exercise on a topic"""
+    from ai_integration import generate_practice_exercise
+
+    data = request.get_json()
+
+    if not data or not data.get('topic'):
+        return jsonify({'error': 'Missing topic'}), 400
+
+    result = generate_practice_exercise(
+        data['topic'],
+        difficulty=data.get('difficulty', 'medium'),
+        provider=data.get('provider', 'gemini')
     )
 
     return jsonify(result), 200

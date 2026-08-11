@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Which Test Should I Use?{% endblock %}
+{% block meta_description %}Answer a few questions about your data and get pointed to the right statistical technique.{% endblock %}
+
+{% block content %}
+    <section class="page-hero">
+        <div class="container">
+            <a href="/library" class="back-link">&larr; Library</a>
+            <h2>Which Test Should I Use?</h2>
+            <p>Answer two quick questions about your data and we'll point you to the right tool, already open and ready.</p>
+        </div>
+    </section>
+
+    <section class="decision-guide">
+        <div class="container">
+            <div class="decision-box" id="decisionBox">
+
+                <div class="decision-step active" data-step="1">
+                    <h3>What are you trying to do?</h3>
+                    <div class="decision-options">
+                        <button class="decision-option" data-next="descriptive-result">Summarize or describe a single list of numbers</button>
+                        <button class="decision-option" data-next="relationship">See if two numeric variables are related</button>
+                        <button class="decision-option" data-next="ttest-result">Compare two groups to see if they differ</button>
+                    </div>
+                </div>
+
+                <div class="decision-step" data-step="relationship">
+                    <h3>Do you want to predict values, or just measure how strong the relationship is?</h3>
+                    <div class="decision-options">
+                        <button class="decision-option" data-next="correlation-result">Just measure the strength of the relationship</button>
+                        <button class="decision-option" data-next="regression-result">Predict one variable from the other</button>
+                    </div>
+                    <button class="decision-back" data-back="1">&larr; Back</button>
+                </div>
+
+                <div class="decision-result" data-step="descriptive-result">
+                    <div class="result-icon">📊</div>
+                    <h3>Use Descriptive Statistics</h3>
+                    <p>You want the mean, median, standard deviation, and spread of a single set of numbers. That's exactly what this tool calculates.</p>
+                    <a href="/tools?open=descriptive" class="btn btn-primary">Open Descriptive Statistics</a>
+                    <button class="decision-back" data-back="1">&larr; Start Over</button>
+                </div>
+
+                <div class="decision-result" data-step="correlation-result">
+                    <div class="result-icon">📉</div>
+                    <h3>Use Correlation Analysis</h3>
+                    <p>You want to know how strongly two numeric variables move together, from -1 to 1, without necessarily predicting exact values.</p>
+                    <a href="/tools?open=correlation" class="btn btn-primary">Open Correlation Analysis</a>
+                    <button class="decision-back" data-back="1">&larr; Start Over</button>
+                </div>
+
+                <div class="decision-result" data-step="regression-result">
+                    <div class="result-icon">📐</div>
+                    <h3>Use Regression Analysis</h3>
+                    <p>You want an actual equation to predict one variable from the other, plus a sense of how much of the outcome the predictor explains (R&sup2;).</p>
+                    <a href="/tools?open=regression" class="btn btn-primary">Open Regression Analysis</a>
+                    <button class="decision-back" data-back="1">&larr; Start Over</button>
+                </div>
+
+                <div class="decision-result" data-step="ttest-result">
+                    <div class="result-icon">🔬</div>
+                    <h3>Use Hypothesis Testing (T-test)</h3>
+                    <p>You want to know if the difference between two groups' averages is likely to be real, or just random noise in your sample.</p>
+                    <a href="/tools?open=ttest" class="btn btn-primary">Open Hypothesis Testing</a>
+                    <button class="decision-back" data-back="1">&larr; Start Over</button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block scripts %}
+    <script src="/js/which_test.js"></script>
+{% endblock %}

@@ -1181,3 +1181,421 @@ body {
         justify-content: center;
     }
 }
+
+/* ==================== Library / Datasets / Case Studies ==================== */
+
+.library-hub {
+    padding: 3rem 0 1rem;
+}
+
+.hub-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+}
+
+.hub-card {
+    display: block;
+    background-color: var(--light-gray);
+    border-radius: 8px;
+    padding: 1.75rem;
+    text-decoration: none;
+    color: inherit;
+    border-top: 4px solid var(--accent-gold);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hub-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0,51,102,0.12);
+}
+
+.hub-icon {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+}
+
+.hub-card h3 {
+    color: var(--primary-blue);
+    margin-bottom: 0.5rem;
+}
+
+.hub-card p {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Glossary */
+.glossary {
+    padding: 3rem 0 4rem;
+}
+
+.glossary h2 {
+    text-align: left;
+    font-size: 2rem;
+}
+
+.glossary-controls {
+    margin-bottom: 2rem;
+}
+
+.glossary-search {
+    width: 100%;
+    max-width: 400px;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--border-gray);
+    border-radius: 6px;
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.glossary-search:focus {
+    outline: none;
+    border-color: var(--light-blue);
+}
+
+.glossary-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.filter-chip {
+    background: none;
+    border: 2px solid var(--border-gray);
+    color: var(--primary-blue);
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.filter-chip:hover {
+    border-color: var(--light-blue);
+}
+
+.filter-chip.active {
+    background-color: var(--primary-blue);
+    border-color: var(--primary-blue);
+    color: var(--white);
+}
+
+.glossary-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.25rem;
+}
+
+.glossary-term {
+    background-color: var(--light-gray);
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+.glossary-term-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.glossary-term h3 {
+    color: var(--primary-blue);
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.term-category {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--accent-gold);
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.glossary-term p {
+    color: #555;
+    font-size: 0.92rem;
+    margin-bottom: 1rem;
+}
+
+.glossary-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+}
+
+.link-action {
+    background: none;
+    border: none;
+    color: var(--light-blue);
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    padding: 0;
+    text-decoration: none;
+}
+
+.link-action:hover {
+    text-decoration: underline;
+}
+
+.ai-explanation {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: var(--white);
+    border-left: 3px solid var(--accent-gold);
+    border-radius: 4px;
+    font-size: 0.9rem;
+    color: var(--dark-gray);
+}
+
+.no-results {
+    text-align: center;
+    color: #888;
+    padding: 2rem 0;
+}
+
+/* Which Test decision guide */
+.decision-guide {
+    padding: 3rem 0 4rem;
+}
+
+.decision-box {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: var(--light-gray);
+    border-radius: 8px;
+    padding: 2.5rem;
+    text-align: center;
+}
+
+.decision-step,
+.decision-result {
+    display: none;
+}
+
+.decision-step.active,
+.decision-result.active {
+    display: block;
+}
+
+.decision-step h3,
+.decision-result h3 {
+    color: var(--primary-blue);
+    margin-bottom: 1.5rem;
+    font-size: 1.3rem;
+}
+
+.decision-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.decision-option {
+    background-color: var(--white);
+    border: 2px solid var(--border-gray);
+    color: var(--primary-blue);
+    padding: 1rem 1.25rem;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s ease;
+}
+
+.decision-option:hover {
+    border-color: var(--light-blue);
+    background-color: var(--white);
+    transform: translateX(4px);
+}
+
+.decision-back {
+    background: none;
+    border: none;
+    color: var(--ink-muted, #777);
+    font-size: 0.85rem;
+    margin-top: 1.5rem;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.result-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.decision-result p {
+    color: #555;
+    margin-bottom: 1.5rem;
+}
+
+/* Datasets page */
+.datasets-page {
+    padding: 3rem 0 4rem;
+}
+
+.dataset-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.dataset-card {
+    background-color: var(--light-gray);
+    border-radius: 8px;
+    padding: 1.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    border-left: 4px solid var(--accent-gold);
+}
+
+.dataset-card-main h3 {
+    color: var(--primary-blue);
+    margin: 0.5rem 0;
+}
+
+.dataset-card-main p {
+    color: #666;
+    font-size: 0.92rem;
+    margin-bottom: 0.75rem;
+}
+
+.dataset-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.dataset-columns {
+    font-family: 'Cascadia Code', Consolas, monospace;
+}
+
+.dataset-card-actions {
+    flex-shrink: 0;
+}
+
+.dataset-category-tag {
+    display: inline-block;
+    background-color: var(--light-blue);
+    color: var(--white);
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.dataset-disclaimer {
+    margin-top: 2rem;
+    color: #888;
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+/* Case studies */
+.case-studies-page {
+    padding: 3rem 0 4rem;
+}
+
+.case-study-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.case-study-card {
+    display: block;
+    background-color: var(--light-gray);
+    border-radius: 8px;
+    padding: 1.75rem;
+    text-decoration: none;
+    color: inherit;
+    border-top: 4px solid var(--accent-gold);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.case-study-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0,51,102,0.12);
+}
+
+.case-study-card h3 {
+    color: var(--primary-blue);
+    margin: 0.5rem 0;
+}
+
+.case-study-card p {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+}
+
+.case-study-technique {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--accent-gold);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.case-study-detail {
+    padding: 2rem 0 4rem;
+}
+
+.case-study-detail .detail-block {
+    max-width: 780px;
+}
+
+.steps-list {
+    padding-left: 1.25rem;
+    color: var(--dark-gray);
+}
+
+.steps-list li {
+    margin-bottom: 0.5rem;
+}
+
+.dataset-link-note {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 0.75rem;
+}
+
+.case-study-results {
+    max-width: 780px;
+}
+
+.case-study-caveat {
+    max-width: 780px;
+    margin-top: 2rem;
+}
+
+/* Tools deep-link highlight */
+.tool-panel-highlight {
+    animation: highlightPulse 1.8s ease;
+}
+
+@keyframes highlightPulse {
+    0%, 100% { box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    30% { box-shadow: 0 0 0 4px rgba(212,175,55,0.6); }
+}
+
+@media (max-width: 700px) {
+    .dataset-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
