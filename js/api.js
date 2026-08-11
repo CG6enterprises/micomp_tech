@@ -1,7 +1,8 @@
 // API Integration Module
 // Handles communication with backend API
 
-const API_BASE_URL = 'http://localhost:5000/api';
+// Relative path: works regardless of host/port since pages are served by the same Flask app.
+const API_BASE_URL = '/api';
 
 class APIClient {
     constructor(baseURL = API_BASE_URL) {
@@ -18,16 +19,26 @@ class APIClient {
             ...options
         };
 
+        let response;
         try {
-            const response = await fetch(url, config);
-            if (!response.ok) {
-                throw new Error(`API Error: ${response.statusText}`);
-            }
-            return await response.json();
+            response = await fetch(url, config);
         } catch (error) {
-            console.error('API Request Error:', error);
-            throw error;
+            throw new Error('Network error: could not reach the server');
         }
+
+        let data = null;
+        try {
+            data = await response.json();
+        } catch (error) {
+            // Response had no JSON body
+        }
+
+        if (!response.ok) {
+            const message = (data && data.error) ? data.error : `Request failed (${response.status})`;
+            throw new Error(message);
+        }
+
+        return data;
     }
 
     // User endpoints
@@ -94,6 +105,14 @@ class APIClient {
         return this.request(`/invoices/${projectId}`);
     }
 
+    // Contact / lead endpoints
+    async submitContact(payload) {
+        return this.request('/contact', {
+            method: 'POST',
+            body: JSON.stringify(payload)
+        });
+    }
+
     // Analysis endpoints
     async descriptiveStats(values) {
         return this.request('/analysis/descriptive', {
@@ -113,6 +132,13 @@ class APIClient {
         return this.request('/analysis/ttest', {
             method: 'POST',
             body: JSON.stringify({ group1, group2 })
+        });
+    }
+
+    async regressionAnalysis(x, y) {
+        return this.request('/analysis/regression', {
+            method: 'POST',
+            body: JSON.stringify({ x, y })
         });
     }
 

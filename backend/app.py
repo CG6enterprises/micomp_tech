@@ -3,20 +3,23 @@ Micomp_Tech Backend Application
 Statistical Sciences & Data Management Platform
 """
 
-from flask import Flask, jsonify, request, send_from_directory
+import json
+import os
+from datetime import datetime
+
+from dotenv import load_dotenv
+from flask import Flask, abort, jsonify, render_template, request, send_from_directory
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
-import os
-from dotenv import load_dotenv
+from werkzeug.security import generate_password_hash
 
 # Load environment variables
 load_dotenv()
 
-# Frontend lives one level up from backend/ (repo root)
+# Frontend static assets (css/js) live one level up from backend/ (repo root)
 FRONTEND_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
-# Initialize Flask app
+# Initialize Flask app (Jinja templates live in backend/templates/)
 app = Flask(__name__)
 CORS(app)
 
@@ -37,7 +40,7 @@ class User(db.Model):
     password_hash = db.Column(db.String(255), nullable=False)
     user_type = db.Column(db.String(20), nullable=False)  # 'student' or 'professional'
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    
+
     def __repr__(self):
         return f'<User {self.username}>'
 
@@ -49,11 +52,32 @@ class Course(db.Model):
     description = db.Column(db.Text, nullable=False)
     level = db.Column(db.String(20), nullable=False)  # 'Beginner', 'Intermediate', 'Advanced'
     duration = db.Column(db.String(20), nullable=False)  # e.g., '4 weeks'
+    icon = db.Column(db.String(10), nullable=True)
     content = db.Column(db.Text, nullable=True)
+    outcomes = db.Column(db.Text, nullable=True)  # JSON list of strings
+    prerequisites = db.Column(db.Text, nullable=True)
+    syllabus = db.Column(db.Text, nullable=True)  # JSON list of {title, lessons, hours}
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    
+
     def __repr__(self):
         return f'<Course {self.title}>'
+
+    def to_dict(self, detailed=False):
+        data = {
+            'id': self.id,
+            'title': self.title,
+            'description': self.description,
+            'level': self.level,
+            'duration': self.duration,
+            'icon': self.icon,
+            'created_at': self.created_at.isoformat()
+        }
+        if detailed:
+            data['content'] = self.content
+            data['outcomes'] = json.loads(self.outcomes) if self.outcomes else []
+            data['prerequisites'] = self.prerequisites
+            data['syllabus'] = json.loads(self.syllabus) if self.syllabus else []
+        return data
 
 
 class Enrollment(db.Model):
@@ -64,7 +88,7 @@ class Enrollment(db.Model):
     progress = db.Column(db.Integer, default=0)  # 0-100%
     enrolled_at = db.Column(db.DateTime, default=datetime.utcnow)
     completed_at = db.Column(db.DateTime, nullable=True)
-    
+
     def __repr__(self):
         return f'<Enrollment {self.user_id} in {self.course_id}>'
 
@@ -78,7 +102,7 @@ class Project(db.Model):
     client_name = db.Column(db.String(120), nullable=False)
     status = db.Column(db.String(20), default='completed')
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    
+
     def __repr__(self):
         return f'<Project {self.title}>'
 
@@ -93,18 +117,71 @@ class Invoice(db.Model):
     hourly_rate = db.Column(db.Float, nullable=True)
     status = db.Column(db.String(20), default='pending')  # 'pending', 'paid'
     issued_at = db.Column(db.DateTime, default=datetime.utcnow)
-    
+
     def __repr__(self):
         return f'<Invoice {self.id}>'
 
 
-# ==================== API ROUTES ====================
+class ContactMessage(db.Model):
+    """Inbound contact form / quote request / course-interest messages"""
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120), nullable=False)
+    email = db.Column(db.String(120), nullable=False)
+    message = db.Column(db.Text, nullable=False)
+    inquiry_type = db.Column(db.String(20), default='general')  # 'general', 'quote', 'course_interest'
+    service_category = db.Column(db.String(120), nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f'<ContactMessage {self.id} from {self.email}>'
+
+
+# ==================== PAGE ROUTES (server-rendered) ====================
 
 @app.route('/', methods=['GET'])
 def home():
-    """Serve the landing page"""
-    return send_from_directory(FRONTEND_DIR, 'index.html')
+    courses = Course.query.order_by(Course.id).limit(4).all()
+    return render_template('home.html', active_page='home', courses=courses)
 
+
+@app.route('/courses', methods=['GET'])
+def courses_page():
+    courses = Course.query.order_by(Course.id).all()
+    return render_template('courses.html', active_page='courses', courses=courses)
+
+
+@app.route('/courses/<int:course_id>', methods=['GET'])
+def course_detail_page(course_id):
+    course = Course.query.get(course_id)
+    if not course:
+        abort(404)
+    outcomes = json.loads(course.outcomes) if course.outcomes else []
+    syllabus = json.loads(course.syllabus) if course.syllabus else []
+    return render_template(
+        'course_detail.html',
+        active_page='courses',
+        course=course,
+        outcomes=outcomes,
+        syllabus=syllabus
+    )
+
+
+@app.route('/tools', methods=['GET'])
+def tools_page():
+    return render_template('tools.html', active_page='tools')
+
+
+@app.route('/services', methods=['GET'])
+def services_page():
+    return render_template('services.html', active_page='services')
+
+
+@app.route('/contact', methods=['GET'])
+def contact_page():
+    return render_template('contact.html', active_page='contact')
+
+
+# ==================== STATIC ASSETS ====================
 
 @app.route('/css/<path:filename>', methods=['GET'])
 def css_files(filename):
@@ -115,6 +192,8 @@ def css_files(filename):
 def js_files(filename):
     return send_from_directory(os.path.join(FRONTEND_DIR, 'js'), filename)
 
+
+# ==================== JSON API ====================
 
 @app.route('/api', methods=['GET'])
 def api_root():
@@ -137,20 +216,20 @@ def health():
 def create_user():
     """Create a new user"""
     data = request.get_json()
-    
-    if not data or not data.get('username') or not data.get('email'):
+
+    if not data or not data.get('username') or not data.get('email') or not data.get('password'):
         return jsonify({'error': 'Missing required fields'}), 400
-    
+
     try:
         user = User(
             username=data['username'],
             email=data['email'],
-            password_hash=data.get('password', ''),
+            password_hash=generate_password_hash(data['password']),
             user_type=data.get('user_type', 'student')
         )
         db.session.add(user)
         db.session.commit()
-        
+
         return jsonify({
             'id': user.id,
             'username': user.username,
@@ -167,10 +246,10 @@ def create_user():
 def get_user(user_id):
     """Get user by ID"""
     user = User.query.get(user_id)
-    
+
     if not user:
         return jsonify({'error': 'User not found'}), 404
-    
+
     return jsonify({
         'id': user.id,
         'username': user.username,
@@ -185,44 +264,33 @@ def get_user(user_id):
 def get_courses():
     """Get all courses"""
     courses = Course.query.all()
-    
-    return jsonify([{
-        'id': course.id,
-        'title': course.title,
-        'description': course.description,
-        'level': course.level,
-        'duration': course.duration,
-        'created_at': course.created_at.isoformat()
-    } for course in courses]), 200
+    return jsonify([course.to_dict() for course in courses]), 200
 
 
 @app.route('/api/courses', methods=['POST'])
 def create_course():
     """Create a new course"""
     data = request.get_json()
-    
+
     if not data or not data.get('title'):
         return jsonify({'error': 'Missing required fields'}), 400
-    
+
     try:
         course = Course(
             title=data['title'],
             description=data.get('description', ''),
             level=data.get('level', 'Beginner'),
             duration=data.get('duration', ''),
-            content=data.get('content', '')
+            icon=data.get('icon', '📊'),
+            content=data.get('content', ''),
+            outcomes=json.dumps(data.get('outcomes', [])),
+            prerequisites=data.get('prerequisites', ''),
+            syllabus=json.dumps(data.get('syllabus', []))
         )
         db.session.add(course)
         db.session.commit()
-        
-        return jsonify({
-            'id': course.id,
-            'title': course.title,
-            'description': course.description,
-            'level': course.level,
-            'duration': course.duration,
-            'created_at': course.created_at.isoformat()
-        }), 201
+
+        return jsonify(course.to_dict(detailed=True)), 201
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': str(e)}), 400
@@ -232,19 +300,11 @@ def create_course():
 def get_course(course_id):
     """Get course by ID"""
     course = Course.query.get(course_id)
-    
+
     if not course:
         return jsonify({'error': 'Course not found'}), 404
-    
-    return jsonify({
-        'id': course.id,
-        'title': course.title,
-        'description': course.description,
-        'level': course.level,
-        'duration': course.duration,
-        'content': course.content,
-        'created_at': course.created_at.isoformat()
-    }), 200
+
+    return jsonify(course.to_dict(detailed=True)), 200
 
 
 # Enrollment Routes
@@ -252,10 +312,10 @@ def get_course(course_id):
 def create_enrollment():
     """Enroll a user in a course"""
     data = request.get_json()
-    
+
     if not data or not data.get('user_id') or not data.get('course_id'):
         return jsonify({'error': 'Missing required fields'}), 400
-    
+
     try:
         enrollment = Enrollment(
             user_id=data['user_id'],
@@ -263,7 +323,7 @@ def create_enrollment():
         )
         db.session.add(enrollment)
         db.session.commit()
-        
+
         return jsonify({
             'id': enrollment.id,
             'user_id': enrollment.user_id,
@@ -280,7 +340,7 @@ def create_enrollment():
 def get_user_enrollments(user_id):
     """Get all courses enrolled by a user"""
     enrollments = Enrollment.query.filter_by(user_id=user_id).all()
-    
+
     return jsonify([{
         'id': enrollment.id,
         'course_id': enrollment.course_id,
@@ -295,7 +355,7 @@ def get_user_enrollments(user_id):
 def get_projects():
     """Get all projects"""
     projects = Project.query.all()
-    
+
     return jsonify([{
         'id': project.id,
         'title': project.title,
@@ -311,10 +371,10 @@ def get_projects():
 def create_project():
     """Create a new project"""
     data = request.get_json()
-    
+
     if not data or not data.get('title') or not data.get('category'):
         return jsonify({'error': 'Missing required fields'}), 400
-    
+
     try:
         project = Project(
             title=data['title'],
@@ -325,7 +385,7 @@ def create_project():
         )
         db.session.add(project)
         db.session.commit()
-        
+
         return jsonify({
             'id': project.id,
             'title': project.title,
@@ -345,10 +405,10 @@ def create_project():
 def create_invoice():
     """Create a new invoice"""
     data = request.get_json()
-    
+
     if not data or not data.get('project_id') or not data.get('amount'):
         return jsonify({'error': 'Missing required fields'}), 400
-    
+
     try:
         invoice = Invoice(
             project_id=data['project_id'],
@@ -360,7 +420,7 @@ def create_invoice():
         )
         db.session.add(invoice)
         db.session.commit()
-        
+
         return jsonify({
             'id': invoice.id,
             'project_id': invoice.project_id,
@@ -380,7 +440,7 @@ def create_invoice():
 def get_project_invoices(project_id):
     """Get all invoices for a project"""
     invoices = Invoice.query.filter_by(project_id=project_id).all()
-    
+
     return jsonify([{
         'id': invoice.id,
         'project_id': invoice.project_id,
@@ -393,20 +453,65 @@ def get_project_invoices(project_id):
     } for invoice in invoices]), 200
 
 
+# Contact / Lead Routes
+@app.route('/api/contact', methods=['POST'])
+def submit_contact():
+    """Handle contact form, quote requests, and course-interest submissions"""
+    data = request.get_json()
+
+    if not data or not data.get('name') or not data.get('email') or not data.get('message'):
+        return jsonify({'error': 'Missing required fields'}), 400
+
+    try:
+        msg = ContactMessage(
+            name=data['name'],
+            email=data['email'],
+            message=data['message'],
+            inquiry_type=data.get('inquiry_type', 'general'),
+            service_category=data.get('service_category')
+        )
+        db.session.add(msg)
+        db.session.commit()
+
+        return jsonify({
+            'status': 'success',
+            'message': "Thanks! We've received your message and will get back to you soon."
+        }), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 400
+
+
+@app.route('/api/contact-messages', methods=['GET'])
+def list_contact_messages():
+    """List inbound messages. NOTE: unauthenticated - restrict this once accounts/auth exist."""
+    messages = ContactMessage.query.order_by(ContactMessage.created_at.desc()).all()
+
+    return jsonify([{
+        'id': m.id,
+        'name': m.name,
+        'email': m.email,
+        'message': m.message,
+        'inquiry_type': m.inquiry_type,
+        'service_category': m.service_category,
+        'created_at': m.created_at.isoformat()
+    } for m in messages]), 200
+
+
 # Statistical Analysis Routes
 @app.route('/api/analysis/descriptive', methods=['POST'])
 def descriptive_stats():
     """Calculate descriptive statistics"""
     import numpy as np
-    
+
     data = request.get_json()
-    
+
     if not data or not data.get('values'):
         return jsonify({'error': 'Missing data values'}), 400
-    
+
     try:
         values = np.array(data['values'], dtype=float)
-        
+
         stats = {
             'count': int(len(values)),
             'mean': float(np.mean(values)),
@@ -419,7 +524,7 @@ def descriptive_stats():
             'q1': float(np.percentile(values, 25)),
             'q3': float(np.percentile(values, 75))
         }
-        
+
         return jsonify(stats), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 400
@@ -430,21 +535,21 @@ def correlation_analysis():
     """Calculate correlation between two variables"""
     from scipy.stats import pearsonr
     import numpy as np
-    
+
     data = request.get_json()
-    
+
     if not data or not data.get('x') or not data.get('y'):
         return jsonify({'error': 'Missing x and y values'}), 400
-    
+
     try:
         x = np.array(data['x'], dtype=float)
         y = np.array(data['y'], dtype=float)
-        
+
         if len(x) != len(y):
             return jsonify({'error': 'x and y must have the same length'}), 400
-        
+
         correlation, p_value = pearsonr(x, y)
-        
+
         return jsonify({
             'correlation': float(correlation),
             'p_value': float(p_value),
@@ -459,16 +564,16 @@ def ttest_analysis():
     """Perform t-test"""
     from scipy.stats import ttest_ind
     import numpy as np
-    
+
     data = request.get_json()
-    
+
     if not data or not data.get('group1') or not data.get('group2'):
         return jsonify({'error': 'Missing group1 and group2 values'}), 400
-    
+
     try:
         group1 = np.array(data['group1'], dtype=float)
         group2 = np.array(data['group2'], dtype=float)
-        
+
         t_stat, p_value = ttest_ind(group1, group2)
 
         return jsonify({
@@ -476,6 +581,41 @@ def ttest_analysis():
             'p_value': float(p_value),
             'significant': bool(p_value < 0.05),
             'interpretation': 'Significant difference' if p_value < 0.05 else 'No significant difference'
+        }), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
+
+
+@app.route('/api/analysis/regression', methods=['POST'])
+def regression_analysis():
+    """Simple linear regression"""
+    from scipy.stats import linregress
+    import numpy as np
+
+    data = request.get_json()
+
+    if not data or not data.get('x') or not data.get('y'):
+        return jsonify({'error': 'Missing x and y values'}), 400
+
+    try:
+        x = np.array(data['x'], dtype=float)
+        y = np.array(data['y'], dtype=float)
+
+        if len(x) != len(y):
+            return jsonify({'error': 'x and y must have the same length'}), 400
+        if len(x) < 2:
+            return jsonify({'error': 'Need at least 2 data points'}), 400
+
+        result = linregress(x, y)
+
+        return jsonify({
+            'slope': float(result.slope),
+            'intercept': float(result.intercept),
+            'r_value': float(result.rvalue),
+            'r_squared': float(result.rvalue ** 2),
+            'p_value': float(result.pvalue),
+            'std_err': float(result.stderr),
+            'equation': f'y = {result.slope:.4f}x + {result.intercept:.4f}'
         }), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 400
@@ -504,18 +644,130 @@ def chat():
 # Error handlers
 @app.errorhandler(404)
 def not_found(error):
-    return jsonify({'error': 'Resource not found'}), 404
+    if request.path.startswith('/api'):
+        return jsonify({'error': 'Resource not found'}), 404
+    return render_template('404.html', active_page=None), 404
 
 
 @app.errorhandler(500)
 def internal_error(error):
-    return jsonify({'error': 'Internal server error'}), 500
+    if request.path.startswith('/api'):
+        return jsonify({'error': 'Internal server error'}), 500
+    return render_template('500.html', active_page=None), 500
+
+
+# ==================== SEED DATA ====================
+
+def seed_courses():
+    """Populate the four core courses with real syllabus content on first run."""
+    if Course.query.count() > 0:
+        return
+
+    courses = [
+        {
+            'title': 'Data Collection 101',
+            'icon': '📊',
+            'description': 'Learn systematic methods for collecting quality data. Covers sampling techniques, survey design, and data quality assurance.',
+            'level': 'Beginner',
+            'duration': '4 weeks',
+            'prerequisites': 'None. This is a great starting point if you are new to data work.',
+            'outcomes': [
+                'Design a sampling plan appropriate to your research question',
+                'Build survey instruments that minimize bias',
+                'Evaluate data quality using completeness, accuracy, and consistency checks',
+                'Apply ethical standards for data collection and privacy'
+            ],
+            'syllabus': [
+                {'title': 'Foundations of Data Collection', 'lessons': 4, 'hours': 1.5},
+                {'title': 'Sampling Methods & Study Design', 'lessons': 5, 'hours': 2},
+                {'title': 'Building Effective Surveys', 'lessons': 4, 'hours': 1.5},
+                {'title': 'Data Quality & Validation', 'lessons': 4, 'hours': 1.5}
+            ]
+        },
+        {
+            'title': 'Statistical Basics',
+            'icon': '📈',
+            'description': 'Master fundamental statistical concepts. Probability, distributions, hypothesis testing, and confidence intervals.',
+            'level': 'Beginner',
+            'duration': '5 weeks',
+            'prerequisites': 'Basic algebra. No prior statistics experience required.',
+            'outcomes': [
+                'Explain core probability concepts and common distributions',
+                'Calculate and interpret descriptive statistics',
+                'Construct and interpret confidence intervals',
+                'Run and interpret a basic hypothesis test'
+            ],
+            'syllabus': [
+                {'title': 'Descriptive Statistics & Summarizing Data', 'lessons': 5, 'hours': 2},
+                {'title': 'Probability Fundamentals', 'lessons': 5, 'hours': 2},
+                {'title': 'Common Distributions', 'lessons': 5, 'hours': 2},
+                {'title': 'Confidence Intervals', 'lessons': 4, 'hours': 1.5},
+                {'title': 'Introduction to Hypothesis Testing', 'lessons': 5, 'hours': 2}
+            ]
+        },
+        {
+            'title': 'Data Processing',
+            'icon': '🔧',
+            'description': 'Learn ETL processes, data cleaning, transformation, and preparation for analysis. Hands-on with real datasets.',
+            'level': 'Intermediate',
+            'duration': '6 weeks',
+            'prerequisites': 'Statistical Basics, or equivalent familiarity with core statistics concepts.',
+            'outcomes': [
+                'Clean messy, real-world datasets: missing values, duplicates, and outliers',
+                'Build repeatable ETL (extract, transform, load) workflows',
+                'Reshape and merge datasets for analysis',
+                'Prepare a dataset end to end for a statistical analysis'
+            ],
+            'syllabus': [
+                {'title': 'Understanding ETL Pipelines', 'lessons': 4, 'hours': 1.5},
+                {'title': 'Cleaning Real-World Data', 'lessons': 5, 'hours': 2},
+                {'title': 'Transforming & Reshaping Data', 'lessons': 5, 'hours': 2},
+                {'title': 'Merging & Joining Datasets', 'lessons': 4, 'hours': 1.5},
+                {'title': 'Case Study: Business Dataset', 'lessons': 4, 'hours': 1.5},
+                {'title': 'Case Study: Survey Dataset', 'lessons': 4, 'hours': 1.5}
+            ]
+        },
+        {
+            'title': 'Advanced Analysis',
+            'icon': '🎓',
+            'description': 'Dive into regression, ANOVA, multivariate analysis, and predictive modeling. Advanced statistical techniques.',
+            'level': 'Advanced',
+            'duration': '8 weeks',
+            'prerequisites': 'Statistical Basics and Data Processing, or equivalent experience.',
+            'outcomes': [
+                'Build and interpret linear and multiple regression models',
+                'Run and interpret ANOVA for comparing multiple groups',
+                'Apply multivariate analysis techniques',
+                'Build a basic predictive model and evaluate its performance'
+            ],
+            'syllabus': [
+                {'title': 'Simple & Multiple Linear Regression', 'lessons': 6, 'hours': 2.5},
+                {'title': 'Analysis of Variance (ANOVA)', 'lessons': 5, 'hours': 2},
+                {'title': 'Multivariate Analysis Techniques', 'lessons': 5, 'hours': 2},
+                {'title': 'Introduction to Predictive Modeling', 'lessons': 6, 'hours': 2.5},
+                {'title': 'Model Evaluation & Validation', 'lessons': 5, 'hours': 2},
+                {'title': 'Capstone Project', 'lessons': 3, 'hours': 3}
+            ]
+        }
+    ]
+
+    for c in courses:
+        db.session.add(Course(
+            title=c['title'],
+            icon=c['icon'],
+            description=c['description'],
+            level=c['level'],
+            duration=c['duration'],
+            prerequisites=c['prerequisites'],
+            outcomes=json.dumps(c['outcomes']),
+            syllabus=json.dumps(c['syllabus'])
+        ))
+    db.session.commit()
 
 
 if __name__ == '__main__':
-    # Create tables
     with app.app_context():
         db.create_all()
-    
-    # Run the app
+        seed_courses()
+
     app.run(debug=True, host='0.0.0.0', port=5000)

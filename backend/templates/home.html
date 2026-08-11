@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+{% block meta_description %}Master statistical sciences and data management with free courses, live analysis tools, and a data analysis service for your business.{% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Master Statistical Sciences &amp; Data Management</h2>
+            <p>Learn from real courses, run your own analysis with our free tools, or bring us your data project.</p>
+            <div class="hero-buttons">
+                <a href="/courses" class="btn btn-primary">Start Learning</a>
+                <a href="/services" class="btn btn-secondary">Explore Services</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Value Props -->
+    <section class="value-props">
+        <div class="container">
+            <div class="value-grid">
+                <div class="value-card">
+                    <div class="value-icon">📚</div>
+                    <h3>Learn by Doing</h3>
+                    <p>Four hands-on courses covering data collection through advanced analysis, with real datasets and a clear syllabus.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">🧮</div>
+                    <h3>Free Analysis Tools</h3>
+                    <p>Run descriptive statistics, correlation, hypothesis tests, and regression on your own data, right in the browser.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">💼</div>
+                    <h3>Hire Us for Your Data</h3>
+                    <p>Business, education, or tax data analysis for your organization. Request a quote and we'll scope your project.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">🤖</div>
+                    <h3>Ask the AI Assistant</h3>
+                    <p>Stuck on a concept? Ask our AI learning assistant below, any time, for a plain-language explanation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Courses -->
+    <section class="courses">
+        <div class="container">
+            <h2>Our Courses</h2>
+            <div class="courses-grid">
+                {% for course in courses %}
+                <div class="course-card">
+                    <div class="course-icon">{{ course.icon or '📊' }}</div>
+                    <h3>{{ course.title }}</h3>
+                    <p>{{ course.description }}</p>
+                    <div class="course-meta">
+                        <span class="level">{{ course.level }}</span>
+                        <span class="duration">{{ course.duration }}</span>
+                        <span class="price-badge">Free</span>
+                    </div>
+                    <a href="/courses/{{ course.id }}" class="btn btn-primary-small">View Course</a>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="section-cta">
+                <a href="/courses" class="btn btn-secondary">See All Courses</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services teaser -->
+    <section class="cta-banner">
+        <div class="container">
+            <h2>Need Your Data Analyzed Right Now?</h2>
+            <p>We're a data analysis studio taking on new business, education, and tax data projects. Tell us what you need and we'll send a quote.</p>
+            <a href="/services" class="btn btn-primary">Request a Quote</a>
+        </div>
+    </section>
+
+    <!-- AI Assistant Section -->
+    <section class="ai-assistant">
+        <div class="container">
+            <h2>AI-Powered Learning Assistant</h2>
+            <div class="assistant-box">
+                <div class="chatbot-container">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message assistant-message">
+                            <p>Hi! I'm your AI learning assistant. Ask me anything about statistics, data collection, or data processing.</p>
+                        </div>
+                    </div>
+                    <div class="chat-input-area">
+                        <input type="text" id="chatInput" placeholder="Ask me a question..." class="chat-input">
+                        <button class="btn btn-small" id="chatSendBtn">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block scripts %}
+    <script src="/js/chat.js"></script>
+{% endblock %}

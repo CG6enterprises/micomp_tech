@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}{{ course.title }}{% endblock %}
+{% block meta_description %}{{ course.description }}{% endblock %}
+
+{% block content %}
+    <section class="page-hero course-hero">
+        <div class="container">
+            <a href="/courses" class="back-link">&larr; All Courses</a>
+            <div class="course-hero-icon">{{ course.icon or '📊' }}</div>
+            <h2>{{ course.title }}</h2>
+            <p>{{ course.description }}</p>
+            <div class="course-meta">
+                <span class="level">{{ course.level }}</span>
+                <span class="duration">{{ course.duration }}</span>
+                <span class="price-badge">Free</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="course-detail">
+        <div class="container course-detail-grid">
+            <div class="course-detail-main">
+                {% if outcomes %}
+                <div class="detail-block">
+                    <h3>What You'll Learn</h3>
+                    <ul class="outcomes-list">
+                        {% for outcome in outcomes %}
+                        <li>{{ outcome }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                {% if syllabus %}
+                <div class="detail-block">
+                    <h3>Syllabus</h3>
+                    <div class="syllabus-list">
+                        {% for module in syllabus %}
+                        <div class="syllabus-module">
+                            <div class="syllabus-module-header">
+                                <span class="syllabus-index">{{ loop.index }}</span>
+                                <span class="syllabus-title">{{ module.title }}</span>
+                            </div>
+                            <div class="syllabus-meta">{{ module.lessons }} lessons &middot; ~{{ module.hours }} hrs</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if course.prerequisites %}
+                <div class="detail-block">
+                    <h3>Prerequisites</h3>
+                    <p>{{ course.prerequisites }}</p>
+                </div>
+                {% endif %}
+            </div>
+
+            <aside class="course-detail-sidebar">
+                <div class="enroll-card">
+                    <h3>Get Started</h3>
+                    <p>Accounts and self-paced enrollment are launching soon. Leave your email and we'll notify you the moment this course opens.</p>
+                    <form id="courseInterestForm" class="stacked-form">
+                        <input type="hidden" id="courseTitle" value="{{ course.title }}">
+                        <input type="text" id="interestName" placeholder="Your Name" required>
+                        <input type="email" id="interestEmail" placeholder="Your Email" required>
+                        <button type="submit" class="btn btn-primary">Notify Me</button>
+                    </form>
+                    <p class="form-status" id="interestStatus"></p>
+                </div>
+            </aside>
+        </div>
+    </section>
+{% endblock %}
+
+{% block scripts %}
+    <script src="/js/course_interest.js"></script>
+{% endblock %}

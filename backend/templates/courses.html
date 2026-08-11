@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Courses{% endblock %}
+{% block meta_description %}Four courses covering data collection, statistical basics, data processing, and advanced analysis. Free while we grow.{% endblock %}
+
+{% block content %}
+    <section class="page-hero">
+        <div class="container">
+            <h2>Our Courses</h2>
+            <p>Four courses, beginner to advanced, covering the full path from collecting data to analyzing it. All courses are free while we build out the platform.</p>
+        </div>
+    </section>
+
+    <section class="courses">
+        <div class="container">
+            <div class="courses-grid">
+                {% for course in courses %}
+                <div class="course-card">
+                    <div class="course-icon">{{ course.icon or '📊' }}</div>
+                    <h3>{{ course.title }}</h3>
+                    <p>{{ course.description }}</p>
+                    <div class="course-meta">
+                        <span class="level">{{ course.level }}</span>
+                        <span class="duration">{{ course.duration }}</span>
+                        <span class="price-badge">Free</span>
+                    </div>
+                    <a href="/courses/{{ course.id }}" class="btn btn-primary-small">View Syllabus</a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

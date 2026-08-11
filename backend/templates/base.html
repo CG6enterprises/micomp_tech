@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Micomp_Tech{% endblock %} | Statistical Sciences & Data Management</title>
+    <meta name="description" content="{% block meta_description %}Learn statistical sciences and data management, use free analysis tools, or hire us for your data project.{% endblock %}">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="/" class="logo"><h1>Micomp_Tech</h1></a>
+            <ul class="nav-menu">
+                <li><a href="/" class="nav-link {{ 'active' if active_page == 'home' else '' }}">Home</a></li>
+                <li><a href="/courses" class="nav-link {{ 'active' if active_page == 'courses' else '' }}">Courses</a></li>
+                <li><a href="/tools" class="nav-link {{ 'active' if active_page == 'tools' else '' }}">Analysis Tools</a></li>
+                <li><a href="/services" class="nav-link {{ 'active' if active_page == 'services' else '' }}">Services</a></li>
+                <li><a href="/contact" class="nav-link {{ 'active' if active_page == 'contact' else '' }}">Contact</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <button class="btn btn-login" disabled title="Accounts are launching soon">Login</button>
+                <button class="btn btn-signup" disabled title="Accounts are launching soon">Sign Up</button>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-content">
+            <div>
+                <p class="footer-brand">Micomp_Tech</p>
+                <p>Statistical Sciences &amp; Data Management</p>
+            </div>
+            <ul class="footer-links">
+                <li><a href="/courses">Courses</a></li>
+                <li><a href="/tools">Analysis Tools</a></li>
+                <li><a href="/services">Services</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
+            <p class="footer-copy">&copy; 2026 Micomp_Tech. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="/js/api.js"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
