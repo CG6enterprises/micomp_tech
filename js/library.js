@@ -1,5 +1,12 @@
 // Library page: glossary search/filter + AI "explain this simply" buttons
 
+const LIB_LANG = window.MICOMP_LANG || 'en';
+const LIB_STRINGS = {
+    en: { thinking: 'Thinking...', notConfigured: "The AI assistant isn't configured yet.", unreachable: "Couldn't reach the AI assistant right now." },
+    fr: { thinking: 'Réflexion en cours...', notConfigured: "L'assistant IA n'est pas encore configuré.", unreachable: "Impossible de joindre l'assistant IA pour le moment." }
+};
+const LS = LIB_STRINGS[LIB_LANG] || LIB_STRINGS.en;
+
 const searchInput = document.getElementById('glossarySearch');
 const filterChips = document.querySelectorAll('.filter-chip');
 const terms = document.querySelectorAll('.glossary-term');
@@ -41,21 +48,21 @@ document.querySelectorAll('.explain-btn').forEach((btn, index) => {
         const target = document.getElementById(targetId);
 
         target.style.display = 'block';
-        target.textContent = 'Thinking...';
+        target.textContent = LS.thinking;
         btn.disabled = true;
 
         try {
             const result = await apiClient.request('/explain', {
                 method: 'POST',
-                body: JSON.stringify({ concept, level: 'beginner' })
+                body: JSON.stringify({ concept, level: 'beginner', language: LIB_LANG })
             });
             if (result.status === 'success') {
                 target.textContent = result.answer;
             } else {
-                target.textContent = "The AI assistant isn't configured yet.";
+                target.textContent = LS.notConfigured;
             }
         } catch (error) {
-            target.textContent = "Couldn't reach the AI assistant right now.";
+            target.textContent = LS.unreachable;
         } finally {
             btn.disabled = false;
         }

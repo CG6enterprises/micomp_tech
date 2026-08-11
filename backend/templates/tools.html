@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %}Analysis Tools{% endblock %}
-{% block meta_description %}Free statistical analysis tools: descriptive statistics, correlation, hypothesis testing, and regression, right in your browser.{% endblock %}
+{% block title %}{{ t('tools_title') }}{% endblock %}
+{% block meta_description %}{{ t('tools_meta') }}{% endblock %}
 
 {% block content %}
     <section class="page-hero">
         <div class="container">
-            <h2>Statistical Analysis Tools</h2>
-            <p>Paste your own numbers in and get real results, calculated on our server with numpy and scipy. No account required.</p>
-            <p><a href="/which-test-should-i-use" class="back-link">Not sure which one you need? Try the Which Test guide &rarr;</a></p>
+            <h2>{{ t('tools_heading') }}</h2>
+            <p>{{ t('tools_intro') }}</p>
+            <p><a href="{{ '/fr/which-test-should-i-use' if lang == 'fr' else '/which-test-should-i-use' }}" class="back-link">{{ t('tools_which_test_link') }}</a></p>
         </div>
     </section>
 
@@ -18,11 +18,11 @@
 
                 <!-- Descriptive Statistics -->
                 <div class="tool-panel">
-                    <h3>📊 Descriptive Statistics</h3>
-                    <p class="tool-desc">Calculate mean, median, mode, standard deviation, and more from a list of numbers.</p>
-                    <label for="descValues">Values (comma-separated)</label>
+                    <h3>{{ t('tool_descriptive_title') }}</h3>
+                    <p class="tool-desc">{{ t('tool_descriptive_desc') }}</p>
+                    <label for="descValues">{{ t('values_label') }}</label>
                     <textarea id="descValues" rows="2" placeholder="e.g. 10, 20, 30, 40, 50"></textarea>
-                    <button class="btn btn-primary-small" id="descBtn">Calculate</button>
+                    <button class="btn btn-primary-small" id="descBtn">{{ t('calculate_btn') }}</button>
                     <p class="tool-error" id="descError"></p>
                     <div class="tool-results" id="descResults"></div>
                     <canvas id="descChart" width="600" height="220" class="tool-canvas" style="display:none;"></canvas>
@@ -30,13 +30,13 @@
 
                 <!-- Correlation -->
                 <div class="tool-panel">
-                    <h3>📉 Correlation Analysis</h3>
-                    <p class="tool-desc">Measure the linear relationship between two variables.</p>
-                    <label for="corrX">X values (comma-separated)</label>
+                    <h3>{{ t('tool_correlation_title') }}</h3>
+                    <p class="tool-desc">{{ t('tool_correlation_desc') }}</p>
+                    <label for="corrX">{{ t('x_values_label') }}</label>
                     <textarea id="corrX" rows="2" placeholder="e.g. 1, 2, 3, 4, 5"></textarea>
-                    <label for="corrY">Y values (comma-separated)</label>
+                    <label for="corrY">{{ t('y_values_label') }}</label>
                     <textarea id="corrY" rows="2" placeholder="e.g. 2, 4, 5, 4, 6"></textarea>
-                    <button class="btn btn-primary-small" id="corrBtn">Calculate</button>
+                    <button class="btn btn-primary-small" id="corrBtn">{{ t('calculate_btn') }}</button>
                     <p class="tool-error" id="corrError"></p>
                     <div class="tool-results" id="corrResults"></div>
                     <canvas id="corrChart" width="600" height="300" class="tool-canvas" style="display:none;"></canvas>
@@ -44,26 +44,26 @@
 
                 <!-- Hypothesis Testing -->
                 <div class="tool-panel">
-                    <h3>🔬 Hypothesis Testing (t-test)</h3>
-                    <p class="tool-desc">Compare two groups to see if their difference is statistically significant.</p>
-                    <label for="ttestG1">Group 1 values (comma-separated)</label>
+                    <h3>{{ t('tool_ttest_title') }}</h3>
+                    <p class="tool-desc">{{ t('tool_ttest_desc') }}</p>
+                    <label for="ttestG1">{{ t('group1_label') }}</label>
                     <textarea id="ttestG1" rows="2" placeholder="e.g. 10, 12, 14, 15, 16"></textarea>
-                    <label for="ttestG2">Group 2 values (comma-separated)</label>
+                    <label for="ttestG2">{{ t('group2_label') }}</label>
                     <textarea id="ttestG2" rows="2" placeholder="e.g. 18, 20, 19, 22, 21"></textarea>
-                    <button class="btn btn-primary-small" id="ttestBtn">Run Test</button>
+                    <button class="btn btn-primary-small" id="ttestBtn">{{ t('run_test_btn') }}</button>
                     <p class="tool-error" id="ttestError"></p>
                     <div class="tool-results" id="ttestResults"></div>
                 </div>
 
                 <!-- Regression -->
                 <div class="tool-panel">
-                    <h3>📐 Regression Analysis</h3>
-                    <p class="tool-desc">Fit a linear regression line and see how well it predicts your data.</p>
-                    <label for="regX">X values (comma-separated)</label>
+                    <h3>{{ t('tool_regression_title') }}</h3>
+                    <p class="tool-desc">{{ t('tool_regression_desc') }}</p>
+                    <label for="regX">{{ t('x_values_label') }}</label>
                     <textarea id="regX" rows="2" placeholder="e.g. 1, 2, 3, 4, 5"></textarea>
-                    <label for="regY">Y values (comma-separated)</label>
+                    <label for="regY">{{ t('y_values_label') }}</label>
                     <textarea id="regY" rows="2" placeholder="e.g. 2, 4, 5, 4, 6"></textarea>
-                    <button class="btn btn-primary-small" id="regBtn">Run Regression</button>
+                    <button class="btn btn-primary-small" id="regBtn">{{ t('run_regression_btn') }}</button>
                     <p class="tool-error" id="regError"></p>
                     <div class="tool-results" id="regResults"></div>
                     <canvas id="regChart" width="600" height="300" class="tool-canvas" style="display:none;"></canvas>

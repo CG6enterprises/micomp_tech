@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 
-{% block title %}Contact{% endblock %}
-{% block meta_description %}Get in touch with Micomp_Tech.{% endblock %}
+{% block title %}{{ t('contact_title') }}{% endblock %}
+{% block meta_description %}{{ t('contact_meta') }}{% endblock %}
 
 {% block content %}
     <section class="page-hero">
         <div class="container">
-            <h2>Get In Touch</h2>
-            <p>Questions about a course, a data project, or anything else? Send us a message below and we'll get back to you.</p>
+            <h2>{{ t('contact_heading') }}</h2>
+            <p>{{ t('contact_intro') }}</p>
         </div>
     </section>
 
@@ -15,17 +15,17 @@
         <div class="container">
             <div class="contact-content">
                 <div class="contact-info">
-                    <h3>Contact Information</h3>
-                    <p><strong>Email:</strong> <a href="mailto:{{ contact_email }}">{{ contact_email }}</a></p>
-                    <p><strong>Phone:</strong> <a href="tel:{{ contact_phone_tel }}">{{ contact_phone }}</a></p>
+                    <h3>{{ t('contact_info_heading') }}</h3>
+                    <p><strong>{{ t('contact_email_label') }}</strong> <a href="mailto:{{ contact_email }}">{{ contact_email }}</a></p>
+                    <p><strong>{{ t('contact_phone_label') }}</strong> <a href="tel:{{ contact_phone_tel }}">{{ contact_phone }}</a></p>
                 </div>
                 <div class="contact-form">
-                    <h3>Send us a Message</h3>
+                    <h3>{{ t('send_message_heading') }}</h3>
                     <form id="contactForm" class="stacked-form">
-                        <input type="text" id="contactName" placeholder="Your Name" required>
-                        <input type="email" id="contactEmail" placeholder="Your Email" required>
-                        <textarea id="contactMessage" rows="5" placeholder="Your Message" required></textarea>
-                        <button type="submit" class="btn btn-primary">Send Message</button>
+                        <input type="text" id="contactName" placeholder="{{ t('form_name_placeholder') }}" required>
+                        <input type="email" id="contactEmail" placeholder="{{ t('form_email_placeholder') }}" required>
+                        <textarea id="contactMessage" rows="5" placeholder="{{ t('contact_message_placeholder') }}" required></textarea>
+                        <button type="submit" class="btn btn-primary">{{ t('send_message_btn') }}</button>
                     </form>
                     <p class="form-status" id="contactStatus"></p>
                 </div>

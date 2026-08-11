@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 
-{% block title %}Services{% endblock %}
-{% block meta_description %}Data collection and analysis services for business, education, and tax data. Request a quote and we'll scope your project.{% endblock %}
+{% block title %}{{ t('services_title') }}{% endblock %}
+{% block meta_description %}{{ t('services_meta') }}{% endblock %}
 
 {% block content %}
     <section class="page-hero">
         <div class="container">
-            <h2>Data Collection &amp; Analysis Services</h2>
-            <p>We're a data analysis studio taking on new client projects. Every engagement gets full, direct attention, no account managers in between.</p>
+            <h2>{{ t('services_heading') }}</h2>
+            <p>{{ t('services_intro') }}</p>
         </div>
     </section>
 
@@ -15,20 +15,20 @@
         <div class="container">
             <div class="tools-grid">
                 <div class="tool-card">
-                    <h3>💼 Business Analytics</h3>
-                    <p>Sales, marketing, and operations data turned into dashboards and decisions you can act on.</p>
+                    <h3>{{ t('service1_title') }}</h3>
+                    <p>{{ t('service1_text') }}</p>
                 </div>
                 <div class="tool-card">
-                    <h3>🎓 Education Data</h3>
-                    <p>Survey design and analysis for schools and programs: enrollment, outcomes, and satisfaction data.</p>
+                    <h3>{{ t('service2_title') }}</h3>
+                    <p>{{ t('service2_text') }}</p>
                 </div>
                 <div class="tool-card">
-                    <h3>🧾 Tax &amp; Compliance Data</h3>
-                    <p>Data collection and processing workflows for tax compliance reporting across jurisdictions.</p>
+                    <h3>{{ t('service3_title') }}</h3>
+                    <p>{{ t('service3_text') }}</p>
                 </div>
                 <div class="tool-card">
-                    <h3>🛠️ Custom Data Projects</h3>
-                    <p>Cleaning, ETL pipelines, and one-off statistical analysis for whatever dataset you're stuck with.</p>
+                    <h3>{{ t('service4_title') }}</h3>
+                    <p>{{ t('service4_text') }}</p>
                 </div>
             </div>
         </div>
@@ -36,27 +36,27 @@
 
     <section class="how-we-work">
         <div class="container">
-            <h2>How We Work</h2>
+            <h2>{{ t('howwework_heading') }}</h2>
             <div class="process-steps">
                 <div class="process-step">
                     <span class="process-number">1</span>
-                    <h3>Discovery Call</h3>
-                    <p>Tell us about your data and what decision you're trying to make. No cost, no obligation.</p>
+                    <h3>{{ t('process1_title') }}</h3>
+                    <p>{{ t('process1_text') }}</p>
                 </div>
                 <div class="process-step">
                     <span class="process-number">2</span>
-                    <h3>Scope &amp; Quote</h3>
-                    <p>We send a clear, fixed-scope proposal so you know what you're getting and what it costs before we start.</p>
+                    <h3>{{ t('process2_title') }}</h3>
+                    <p>{{ t('process2_text') }}</p>
                 </div>
                 <div class="process-step">
                     <span class="process-number">3</span>
-                    <h3>Analysis &amp; Delivery</h3>
-                    <p>We collect, clean, and analyze your data, and deliver findings in a format you can actually use.</p>
+                    <h3>{{ t('process3_title') }}</h3>
+                    <p>{{ t('process3_text') }}</p>
                 </div>
                 <div class="process-step">
                     <span class="process-number">4</span>
-                    <h3>Ongoing Support</h3>
-                    <p>Questions after delivery are part of the engagement, not a separate bill.</p>
+                    <h3>{{ t('process4_title') }}</h3>
+                    <p>{{ t('process4_text') }}</p>
                 </div>
             </div>
         </div>
@@ -65,28 +65,28 @@
     <section class="honest-note">
         <div class="container">
             <div class="honest-note-box">
-                <h3>We're a new studio</h3>
-                <p>Micomp_Tech is actively taking on its first client projects. We'd rather tell you that plainly than pad this page with numbers we haven't earned yet. Case studies and client results will go here as we complete real work.</p>
+                <h3>{{ t('honest_note_title') }}</h3>
+                <p>{{ t('honest_note_text') }}</p>
             </div>
         </div>
     </section>
 
     <section class="quote-request">
         <div class="container">
-            <h2>Request a Quote</h2>
+            <h2>{{ t('quote_heading') }}</h2>
             <div class="quote-form-wrapper">
                 <form id="quoteForm" class="stacked-form">
-                    <input type="text" id="quoteName" placeholder="Your Name" required>
-                    <input type="email" id="quoteEmail" placeholder="Your Email" required>
+                    <input type="text" id="quoteName" placeholder="{{ t('form_name_placeholder') }}" required>
+                    <input type="email" id="quoteEmail" placeholder="{{ t('form_email_placeholder') }}" required>
                     <select id="quoteCategory" required>
-                        <option value="">Select a Service Category</option>
-                        <option value="Business Analytics">Business Analytics</option>
-                        <option value="Education Data">Education Data</option>
-                        <option value="Tax & Compliance Data">Tax & Compliance Data</option>
-                        <option value="Custom Data Project">Custom Data Project</option>
+                        <option value="">{{ t('quote_category_placeholder') }}</option>
+                        <option value="Business Analytics">{{ t('quote_cat1') }}</option>
+                        <option value="Education Data">{{ t('quote_cat2') }}</option>
+                        <option value="Tax & Compliance Data">{{ t('quote_cat3') }}</option>
+                        <option value="Custom Data Project">{{ t('quote_cat4') }}</option>
                     </select>
-                    <textarea id="quoteMessage" rows="5" placeholder="Tell us about your data and what you're trying to accomplish" required></textarea>
-                    <button type="submit" class="btn btn-primary">Send Request</button>
+                    <textarea id="quoteMessage" rows="5" placeholder="{{ t('quote_message_placeholder') }}" required></textarea>
+                    <button type="submit" class="btn btn-primary">{{ t('send_request_btn') }}</button>
                 </form>
                 <p class="form-status" id="quoteStatus"></p>
             </div>

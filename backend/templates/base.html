@@ -1,27 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ lang }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Micomp_Tech{% endblock %} | Statistical Sciences & Data Management</title>
-    <meta name="description" content="{% block meta_description %}Learn statistical sciences and data management, use free analysis tools, or hire us for your data project.{% endblock %}">
+    <meta name="description" content="{% block meta_description %}{{ t('meta_default') }}{% endblock %}">
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <nav class="navbar">
         <div class="navbar-container">
-            <a href="/" class="logo"><h1>Micomp_Tech</h1></a>
+            <a href="{{ '/fr/' if lang == 'fr' else '/' }}" class="logo"><h1>Micomp_Tech</h1></a>
             <ul class="nav-menu">
-                <li><a href="/" class="nav-link {{ 'active' if active_page == 'home' else '' }}">Home</a></li>
-                <li><a href="/courses" class="nav-link {{ 'active' if active_page == 'courses' else '' }}">Courses</a></li>
-                <li><a href="/tools" class="nav-link {{ 'active' if active_page == 'tools' else '' }}">Analysis Tools</a></li>
-                <li><a href="/library" class="nav-link {{ 'active' if active_page in ['library', 'datasets', 'case-studies'] else '' }}">Library</a></li>
-                <li><a href="/services" class="nav-link {{ 'active' if active_page == 'services' else '' }}">Services</a></li>
-                <li><a href="/contact" class="nav-link {{ 'active' if active_page == 'contact' else '' }}">Contact</a></li>
+                <li><a href="{{ '/fr/' if lang == 'fr' else '/' }}" class="nav-link {{ 'active' if active_page == 'home' else '' }}">{{ t('nav_home') }}</a></li>
+                <li><a href="{{ '/fr/courses' if lang == 'fr' else '/courses' }}" class="nav-link {{ 'active' if active_page == 'courses' else '' }}">{{ t('nav_courses') }}</a></li>
+                <li><a href="{{ '/fr/tools' if lang == 'fr' else '/tools' }}" class="nav-link {{ 'active' if active_page == 'tools' else '' }}">{{ t('nav_tools') }}</a></li>
+                <li><a href="{{ '/fr/library' if lang == 'fr' else '/library' }}" class="nav-link {{ 'active' if active_page in ['library', 'datasets', 'case-studies'] else '' }}">{{ t('nav_library') }}</a></li>
+                <li><a href="{{ '/fr/services' if lang == 'fr' else '/services' }}" class="nav-link {{ 'active' if active_page == 'services' else '' }}">{{ t('nav_services') }}</a></li>
+                <li><a href="{{ '/fr/contact' if lang == 'fr' else '/contact' }}" class="nav-link {{ 'active' if active_page == 'contact' else '' }}">{{ t('nav_contact') }}</a></li>
             </ul>
             <div class="auth-buttons">
-                <button class="btn btn-login" disabled title="Accounts are launching soon">Login</button>
-                <button class="btn btn-signup" disabled title="Accounts are launching soon">Sign Up</button>
+                <a href="{{ lang_switch_path }}" class="btn btn-lang">{{ t('lang_switch_label') }}</a>
+                <button class="btn btn-login" disabled title="{{ t('nav_login_title') }}">{{ t('nav_login') }}</button>
+                <button class="btn btn-signup" disabled title="{{ t('nav_login_title') }}">{{ t('nav_signup') }}</button>
             </div>
         </div>
     </nav>
@@ -34,22 +35,23 @@
         <div class="container footer-content">
             <div>
                 <p class="footer-brand">Micomp_Tech</p>
-                <p>Statistical Sciences &amp; Data Management</p>
+                <p>{{ t('footer_tagline') }}</p>
             </div>
             <ul class="footer-links">
-                <li><a href="/courses">Courses</a></li>
-                <li><a href="/tools">Analysis Tools</a></li>
-                <li><a href="/services">Services</a></li>
-                <li><a href="/contact">Contact</a></li>
+                <li><a href="{{ '/fr/courses' if lang == 'fr' else '/courses' }}">{{ t('nav_courses') }}</a></li>
+                <li><a href="{{ '/fr/tools' if lang == 'fr' else '/tools' }}">{{ t('nav_tools') }}</a></li>
+                <li><a href="{{ '/fr/services' if lang == 'fr' else '/services' }}">{{ t('nav_services') }}</a></li>
+                <li><a href="{{ '/fr/contact' if lang == 'fr' else '/contact' }}">{{ t('nav_contact') }}</a></li>
             </ul>
             <div class="footer-contact">
                 <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>
                 <a href="tel:{{ contact_phone_tel }}">{{ contact_phone }}</a>
             </div>
-            <p class="footer-copy">&copy; 2026 Micomp_Tech. All rights reserved.</p>
+            <p class="footer-copy">{{ t('footer_copyright') }}</p>
         </div>
     </footer>
 
+    <script>window.MICOMP_LANG = "{{ lang }}";</script>
     <script src="/js/api.js"></script>
     {% block scripts %}{% endblock %}
 </body>

@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %}Sample Datasets{% endblock %}
-{% block meta_description %}Free downloadable sample datasets for Business, Education, and Tax statistics practice.{% endblock %}
+{% block title %}{{ t('datasets_title') }}{% endblock %}
+{% block meta_description %}{{ t('datasets_meta') }}{% endblock %}
 
 {% block content %}
     <section class="page-hero">
         <div class="container">
-            <a href="/library" class="back-link">&larr; Library</a>
-            <h2>Sample Datasets</h2>
-            <p>Synthetic practice data, free to download, built for the techniques on this site. Each one pairs with a case study showing exactly what to do with it.</p>
+            <a href="{{ '/fr/library' if lang == 'fr' else '/library' }}" class="back-link">&larr; {{ t('library_link') }}</a>
+            <h2>{{ t('datasets_heading') }}</h2>
+            <p>{{ t('datasets_intro') }}</p>
         </div>
     </section>
 
@@ -22,17 +22,17 @@
                         <h3>{{ ds.name }}</h3>
                         <p>{{ ds.description }}</p>
                         <div class="dataset-meta">
-                            <span>{{ ds.rows }} rows</span>
+                            <span>{{ ds.rows }} {{ t('rows_unit') }}</span>
                             <span class="dataset-columns">{{ ds.columns|join(', ') }}</span>
                         </div>
                     </div>
                     <div class="dataset-card-actions">
-                        <a href="/datasets/download/{{ ds.filename }}" class="btn btn-primary-small" download>Download CSV</a>
+                        <a href="/datasets/download/{{ ds.filename }}" class="btn btn-primary-small" download>{{ t('download_csv_btn') }}</a>
                     </div>
                 </div>
                 {% endfor %}
             </div>
-            <p class="dataset-disclaimer">All datasets on this page are synthetically generated for practice purposes. The Tax dataset in particular is not derived from real client records and should not be used to draw real-world tax conclusions.</p>
+            <p class="dataset-disclaimer">{{ t('datasets_disclaimer') }}</p>
         </div>
     </section>
 {% endblock %}

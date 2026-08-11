@@ -143,10 +143,10 @@ class APIClient {
     }
 
     // AI Assistant endpoint
-    async chat(message, context = null, provider = null) {
+    async chat(message, context = null, provider = null, language = 'en') {
         return this.request('/chat', {
             method: 'POST',
-            body: JSON.stringify({ message, context, provider })
+            body: JSON.stringify({ message, context, provider, language })
         });
     }
 }

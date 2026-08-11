@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %}Which Test Should I Use?{% endblock %}
-{% block meta_description %}Answer a few questions about your data and get pointed to the right statistical technique.{% endblock %}
+{% block title %}{{ t('whichtest_title') }}{% endblock %}
+{% block meta_description %}{{ t('whichtest_meta') }}{% endblock %}
 
 {% block content %}
     <section class="page-hero">
         <div class="container">
-            <a href="/library" class="back-link">&larr; Library</a>
-            <h2>Which Test Should I Use?</h2>
-            <p>Answer two quick questions about your data and we'll point you to the right tool, already open and ready.</p>
+            <a href="{{ '/fr/library' if lang == 'fr' else '/library' }}" class="back-link">&larr; {{ t('library_link') }}</a>
+            <h2>{{ t('whichtest_title') }}</h2>
+            <p>{{ t('whichtest_intro') }}</p>
         </div>
     </section>
 
@@ -17,53 +17,53 @@
             <div class="decision-box" id="decisionBox">
 
                 <div class="decision-step active" data-step="1">
-                    <h3>What are you trying to do?</h3>
+                    <h3>{{ t('decision_q1') }}</h3>
                     <div class="decision-options">
-                        <button class="decision-option" data-next="descriptive-result">Summarize or describe a single list of numbers</button>
-                        <button class="decision-option" data-next="relationship">See if two numeric variables are related</button>
-                        <button class="decision-option" data-next="ttest-result">Compare two groups to see if they differ</button>
+                        <button class="decision-option" data-next="descriptive-result">{{ t('decision_opt_descriptive') }}</button>
+                        <button class="decision-option" data-next="relationship">{{ t('decision_opt_relationship') }}</button>
+                        <button class="decision-option" data-next="ttest-result">{{ t('decision_opt_ttest') }}</button>
                     </div>
                 </div>
 
                 <div class="decision-step" data-step="relationship">
-                    <h3>Do you want to predict values, or just measure how strong the relationship is?</h3>
+                    <h3>{{ t('decision_q2') }}</h3>
                     <div class="decision-options">
-                        <button class="decision-option" data-next="correlation-result">Just measure the strength of the relationship</button>
-                        <button class="decision-option" data-next="regression-result">Predict one variable from the other</button>
+                        <button class="decision-option" data-next="correlation-result">{{ t('decision_opt_correlation') }}</button>
+                        <button class="decision-option" data-next="regression-result">{{ t('decision_opt_regression') }}</button>
                     </div>
-                    <button class="decision-back" data-back="1">&larr; Back</button>
+                    <button class="decision-back" data-back="1">{{ t('back_btn') }}</button>
                 </div>
 
                 <div class="decision-result" data-step="descriptive-result">
                     <div class="result-icon">📊</div>
-                    <h3>Use Descriptive Statistics</h3>
-                    <p>You want the mean, median, standard deviation, and spread of a single set of numbers. That's exactly what this tool calculates.</p>
-                    <a href="/tools?open=descriptive" class="btn btn-primary">Open Descriptive Statistics</a>
-                    <button class="decision-back" data-back="1">&larr; Start Over</button>
+                    <h3>{{ t('result_descriptive_title') }}</h3>
+                    <p>{{ t('result_descriptive_text') }}</p>
+                    <a href="{{ '/fr/tools?open=descriptive' if lang == 'fr' else '/tools?open=descriptive' }}" class="btn btn-primary">{{ t('result_descriptive_btn') }}</a>
+                    <button class="decision-back" data-back="1">{{ t('start_over_btn') }}</button>
                 </div>
 
                 <div class="decision-result" data-step="correlation-result">
                     <div class="result-icon">📉</div>
-                    <h3>Use Correlation Analysis</h3>
-                    <p>You want to know how strongly two numeric variables move together, from -1 to 1, without necessarily predicting exact values.</p>
-                    <a href="/tools?open=correlation" class="btn btn-primary">Open Correlation Analysis</a>
-                    <button class="decision-back" data-back="1">&larr; Start Over</button>
+                    <h3>{{ t('result_correlation_title') }}</h3>
+                    <p>{{ t('result_correlation_text') }}</p>
+                    <a href="{{ '/fr/tools?open=correlation' if lang == 'fr' else '/tools?open=correlation' }}" class="btn btn-primary">{{ t('result_correlation_btn') }}</a>
+                    <button class="decision-back" data-back="1">{{ t('start_over_btn') }}</button>
                 </div>
 
                 <div class="decision-result" data-step="regression-result">
                     <div class="result-icon">📐</div>
-                    <h3>Use Regression Analysis</h3>
-                    <p>You want an actual equation to predict one variable from the other, plus a sense of how much of the outcome the predictor explains (R&sup2;).</p>
-                    <a href="/tools?open=regression" class="btn btn-primary">Open Regression Analysis</a>
-                    <button class="decision-back" data-back="1">&larr; Start Over</button>
+                    <h3>{{ t('result_regression_title') }}</h3>
+                    <p>{{ t('result_regression_text') }}</p>
+                    <a href="{{ '/fr/tools?open=regression' if lang == 'fr' else '/tools?open=regression' }}" class="btn btn-primary">{{ t('result_regression_btn') }}</a>
+                    <button class="decision-back" data-back="1">{{ t('start_over_btn') }}</button>
                 </div>
 
                 <div class="decision-result" data-step="ttest-result">
                     <div class="result-icon">🔬</div>
-                    <h3>Use Hypothesis Testing (T-test)</h3>
-                    <p>You want to know if the difference between two groups' averages is likely to be real, or just random noise in your sample.</p>
-                    <a href="/tools?open=ttest" class="btn btn-primary">Open Hypothesis Testing</a>
-                    <button class="decision-back" data-back="1">&larr; Start Over</button>
+                    <h3>{{ t('result_ttest_title') }}</h3>
+                    <p>{{ t('result_ttest_text') }}</p>
+                    <a href="{{ '/fr/tools?open=ttest' if lang == 'fr' else '/tools?open=ttest' }}" class="btn btn-primary">{{ t('result_ttest_btn') }}</a>
+                    <button class="decision-back" data-back="1">{{ t('start_over_btn') }}</button>
                 </div>
 
             </div>

@@ -1,33 +1,33 @@
 {% extends "base.html" %}
 
-{% block title %}Library{% endblock %}
-{% block meta_description %}A statistics reference library: searchable glossary, a which-test-should-I-use guide, sample datasets, and worked case studies.{% endblock %}
+{% block title %}{{ t('library_title') }}{% endblock %}
+{% block meta_description %}{{ t('library_meta') }}{% endblock %}
 
 {% block content %}
     <section class="page-hero">
         <div class="container">
-            <h2>The Library</h2>
-            <p>Everything you need in one place: look up a term, find the right technique, grab a practice dataset, or read a real worked example.</p>
+            <h2>{{ t('library_heading') }}</h2>
+            <p>{{ t('library_intro') }}</p>
         </div>
     </section>
 
     <section class="library-hub">
         <div class="container">
             <div class="hub-grid">
-                <a href="/which-test-should-i-use" class="hub-card">
+                <a href="{{ '/fr/which-test-should-i-use' if lang == 'fr' else '/which-test-should-i-use' }}" class="hub-card">
                     <div class="hub-icon">🧭</div>
-                    <h3>Which Test Should I Use?</h3>
-                    <p>Answer a few questions about your data and get pointed straight to the right tool.</p>
+                    <h3>{{ t('hub_whichtest_title') }}</h3>
+                    <p>{{ t('hub_whichtest_text') }}</p>
                 </a>
-                <a href="/datasets" class="hub-card">
+                <a href="{{ '/fr/datasets' if lang == 'fr' else '/datasets' }}" class="hub-card">
                     <div class="hub-icon">📂</div>
-                    <h3>Sample Datasets</h3>
-                    <p>Download real practice data for Business, Education, and Tax scenarios.</p>
+                    <h3>{{ t('hub_datasets_title') }}</h3>
+                    <p>{{ t('hub_datasets_text') }}</p>
                 </a>
-                <a href="/case-studies" class="hub-card">
+                <a href="{{ '/fr/case-studies' if lang == 'fr' else '/case-studies' }}" class="hub-card">
                     <div class="hub-icon">📝</div>
-                    <h3>Case Studies</h3>
-                    <p>See the whole process worked start to finish, with real computed results.</p>
+                    <h3>{{ t('hub_casestudies_title') }}</h3>
+                    <p>{{ t('hub_casestudies_text') }}</p>
                 </a>
             </div>
         </div>
@@ -35,11 +35,11 @@
 
     <section class="glossary">
         <div class="container">
-            <h2>Glossary</h2>
+            <h2>{{ t('glossary_heading') }}</h2>
             <div class="glossary-controls">
-                <input type="text" id="glossarySearch" placeholder="Search terms..." class="glossary-search">
+                <input type="text" id="glossarySearch" placeholder="{{ t('glossary_search_placeholder') }}" class="glossary-search">
                 <div class="glossary-filters" id="glossaryFilters">
-                    <button class="filter-chip active" data-category="all">All</button>
+                    <button class="filter-chip active" data-category="all">{{ t('filter_all') }}</button>
                     {% for category in categories %}
                     <button class="filter-chip" data-category="{{ category }}">{{ category }}</button>
                     {% endfor %}
@@ -56,15 +56,15 @@
                     <p>{{ term.definition }}</p>
                     <div class="glossary-actions">
                         {% if term.related_tool %}
-                        <a href="/tools?open={{ term.related_tool }}" class="link-action">Try it in {{ tool_labels[term.related_tool] }} &rarr;</a>
+                        <a href="{{ ('/fr/tools?open=' if lang == 'fr' else '/tools?open=') ~ term.related_tool }}" class="link-action">{{ t('try_it_in').format(tool=tool_labels[term.related_tool]) }}</a>
                         {% endif %}
-                        <button class="link-action explain-btn" data-concept="{{ term.term }}">Explain this simply (AI)</button>
+                        <button class="link-action explain-btn" data-concept="{{ term.term }}">{{ t('explain_simply_btn') }}</button>
                     </div>
                     <div class="ai-explanation" id="explain-{{ loop.index }}" style="display:none;"></div>
                 </div>
                 {% endfor %}
             </div>
-            <p class="no-results" id="noResults" style="display:none;">No terms match your search.</p>
+            <p class="no-results" id="noResults" style="display:none;">{{ t('no_terms_match') }}</p>
         </div>
     </section>
 {% endblock %}

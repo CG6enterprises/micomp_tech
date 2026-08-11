@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 
-{% block title %}Something Went Wrong{% endblock %}
+{% block title %}{{ t('error_500_title') }}{% endblock %}
 
 {% block content %}
     <section class="page-hero error-page">
         <div class="container">
             <h2>500</h2>
-            <p>Something went wrong on our end. Please try again in a moment.</p>
-            <a href="/" class="btn btn-primary">Back to Home</a>
+            <p>{{ t('error_500_text') }}</p>
+            <a href="{{ '/fr/' if lang == 'fr' else '/' }}" class="btn btn-primary">{{ t('back_home_btn') }}</a>
         </div>
     </section>
 {% endblock %}

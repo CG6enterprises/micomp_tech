@@ -1,5 +1,10 @@
 // Contact page form
 
+const CONTACT_LANG = window.MICOMP_LANG || 'en';
+const CONTACT_FALLBACK_ERROR = CONTACT_LANG === 'fr'
+    ? 'Un problème est survenu. Veuillez réessayer.'
+    : 'Something went wrong. Please try again.';
+
 document.getElementById('contactForm')?.addEventListener('submit', async (event) => {
     event.preventDefault();
     const status = document.getElementById('contactStatus');
@@ -18,13 +23,14 @@ document.getElementById('contactForm')?.addEventListener('submit', async (event)
             name,
             email,
             message,
-            inquiry_type: 'general'
+            inquiry_type: 'general',
+            language: CONTACT_LANG
         });
-        status.textContent = result.message || 'Thanks! We received your message.';
+        status.textContent = result.message || CONTACT_FALLBACK_ERROR;
         status.classList.add('form-status-success');
         event.target.reset();
     } catch (error) {
-        status.textContent = error.message || 'Something went wrong. Please try again.';
+        status.textContent = error.message || CONTACT_FALLBACK_ERROR;
         status.classList.add('form-status-error');
     } finally {
         submitBtn.disabled = false;

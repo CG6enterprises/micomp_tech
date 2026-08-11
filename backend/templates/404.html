@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 
-{% block title %}Page Not Found{% endblock %}
+{% block title %}{{ t('error_404_title') }}{% endblock %}
 
 {% block content %}
     <section class="page-hero error-page">
         <div class="container">
             <h2>404</h2>
-            <p>We couldn't find that page.</p>
-            <a href="/" class="btn btn-primary">Back to Home</a>
+            <p>{{ t('error_404_text') }}</p>
+            <a href="{{ '/fr/' if lang == 'fr' else '/' }}" class="btn btn-primary">{{ t('back_home_btn') }}</a>
         </div>
     </section>
 {% endblock %}

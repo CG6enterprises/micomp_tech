@@ -6,14 +6,14 @@
 {% block content %}
     <section class="page-hero course-hero">
         <div class="container">
-            <a href="/courses" class="back-link">&larr; All Courses</a>
+            <a href="{{ '/fr/courses' if lang == 'fr' else '/courses' }}" class="back-link">&larr; {{ t('all_courses_link') }}</a>
             <div class="course-hero-icon">{{ course.icon or '📊' }}</div>
             <h2>{{ course.title }}</h2>
             <p>{{ course.description }}</p>
             <div class="course-meta">
                 <span class="level">{{ course.level }}</span>
                 <span class="duration">{{ course.duration }}</span>
-                <span class="price-badge">Free</span>
+                <span class="price-badge">{{ t('free_badge') }}</span>
             </div>
         </div>
     </section>
@@ -23,7 +23,7 @@
             <div class="course-detail-main">
                 {% if outcomes %}
                 <div class="detail-block">
-                    <h3>What You'll Learn</h3>
+                    <h3>{{ t('what_youll_learn') }}</h3>
                     <ul class="outcomes-list">
                         {% for outcome in outcomes %}
                         <li>{{ outcome }}</li>
@@ -34,7 +34,7 @@
 
                 {% if syllabus %}
                 <div class="detail-block">
-                    <h3>Syllabus</h3>
+                    <h3>{{ t('syllabus_heading') }}</h3>
                     <div class="syllabus-list">
                         {% for module in syllabus %}
                         <div class="syllabus-module">
@@ -42,7 +42,7 @@
                                 <span class="syllabus-index">{{ loop.index }}</span>
                                 <span class="syllabus-title">{{ module.title }}</span>
                             </div>
-                            <div class="syllabus-meta">{{ module.lessons }} lessons &middot; ~{{ module.hours }} hrs</div>
+                            <div class="syllabus-meta">{{ module.lessons }} {{ t('lessons_unit') }} &middot; ~{{ module.hours }} {{ t('hours_unit') }}</div>
                         </div>
                         {% endfor %}
                     </div>
@@ -51,7 +51,7 @@
 
                 {% if course.prerequisites %}
                 <div class="detail-block">
-                    <h3>Prerequisites</h3>
+                    <h3>{{ t('prerequisites_heading') }}</h3>
                     <p>{{ course.prerequisites }}</p>
                 </div>
                 {% endif %}
@@ -59,13 +59,13 @@
 
             <aside class="course-detail-sidebar">
                 <div class="enroll-card">
-                    <h3>Get Started</h3>
-                    <p>Accounts and self-paced enrollment are launching soon. Leave your email and we'll notify you the moment this course opens.</p>
+                    <h3>{{ t('get_started_heading') }}</h3>
+                    <p>{{ t('enroll_text') }}</p>
                     <form id="courseInterestForm" class="stacked-form">
                         <input type="hidden" id="courseTitle" value="{{ course.title }}">
-                        <input type="text" id="interestName" placeholder="Your Name" required>
-                        <input type="email" id="interestEmail" placeholder="Your Email" required>
-                        <button type="submit" class="btn btn-primary">Notify Me</button>
+                        <input type="text" id="interestName" placeholder="{{ t('form_name_placeholder') }}" required>
+                        <input type="email" id="interestEmail" placeholder="{{ t('form_email_placeholder') }}" required>
+                        <button type="submit" class="btn btn-primary">{{ t('notify_me_btn') }}</button>
                     </form>
                     <p class="form-status" id="interestStatus"></p>
                 </div>

@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 
-{% block title %}Courses{% endblock %}
-{% block meta_description %}Four courses covering data collection, statistical basics, data processing, and advanced analysis. Free while we grow.{% endblock %}
+{% block title %}{{ t('courses_title') }}{% endblock %}
+{% block meta_description %}{{ t('courses_meta') }}{% endblock %}
 
 {% block content %}
     <section class="page-hero">
         <div class="container">
-            <h2>Our Courses</h2>
-            <p>Four courses, beginner to advanced, covering the full path from collecting data to analyzing it. All courses are free while we build out the platform.</p>
+            <h2>{{ t('our_courses_heading') }}</h2>
+            <p>{{ t('courses_page_intro') }}</p>
         </div>
     </section>
 
@@ -22,9 +22,9 @@
                     <div class="course-meta">
                         <span class="level">{{ course.level }}</span>
                         <span class="duration">{{ course.duration }}</span>
-                        <span class="price-badge">Free</span>
+                        <span class="price-badge">{{ t('free_badge') }}</span>
                     </div>
-                    <a href="/courses/{{ course.id }}" class="btn btn-primary-small">View Syllabus</a>
+                    <a href="{{ ('/fr/courses/' if lang == 'fr' else '/courses/') ~ course.id }}" class="btn btn-primary-small">{{ t('view_syllabus_btn') }}</a>
                 </div>
                 {% endfor %}
             </div>
